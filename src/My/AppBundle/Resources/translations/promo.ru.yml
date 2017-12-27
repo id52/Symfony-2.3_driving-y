@@ -1,0 +1,31 @@
+promo_active: "Активна?"
+promo_name: "Название"
+promo_type: "Тип ограничения"
+promo_max_activations: "Количество активаций"
+promo_keys: "Количество ключей"
+promo_payment_type: "Тип оплаты"
+promo_used_from: "Действует с"
+promo_used_to: "Действует до"
+promo_discount: "Скидка"
+
+promo_key_key: "Ключ"
+promo_key_date_create: "Создан"
+promo_key_discount: "Скидка"
+promo_key_date_use: "Использован"
+promo_key_actived: "Активирован"
+promo_key_count_keys: "Количество ключей"
+promo_key_count_activations: "Количество активаций"
+
+types:
+    keys: "по количеству одноразовых ключей"
+    users: "по количеству активаций (1 ключ)"
+
+payment_types:
+    first: "первая"
+    second: "вторая"
+
+actived:
+    'true': "Да"
+    'false': "Нет"
+
+choose_option: ' - выберите - '

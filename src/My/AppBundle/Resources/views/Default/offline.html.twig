@@ -1,0 +1,157 @@
+{% extends 'AppBundle::layout_m.html.twig' %}
+
+{% block css %}
+<link rel="stylesheet" href="/yp/css/payment_page.css"/>
+{% endblock css %}
+
+{% block content %}
+<div class="b_page_payment_title">
+    <h1>Оплата наличными в офисе</h1>
+    <div class="b_plan_category">
+        <div class="b_plan_category--title">Пакет</div>
+        <div class="b_plan_category--name">{{ app.user.category }}</div>
+    </div>
+</div>
+
+<div class="b_page_payment_info{{ app.user.regInfo['is_onetime'] ? ' b_page_payment_info_4' : '' }}">
+    <ul>
+        <li>
+            <div class="b_page_payment_info--img">
+                <img class="" src="/yp/img/icon_6.png" alt="">
+            </div>
+            <div class="b_page_payment_info--title">Теория</div>
+            <div class="b_page_payment_info--info">{{ app.user.category.theory }} часов</div>
+        </li>
+        <li>
+            <div class="b_page_payment_info--img">
+                <img class="" src="/yp/img/icon_5.png" alt="">
+            </div>
+            <div class="b_page_payment_info--title">Вождение</div>
+            <div class="b_page_payment_info--info">{{ app.user.category.practice }} часов</div>
+        </li>
+        <li>
+            <div class="b_page_payment_info--img">
+                <img class="" src="/yp/img/icon_4.png" alt="">
+            </div>
+            <div class="b_page_payment_info--title">Срок обучения</div>
+            <div class="b_page_payment_info--info">
+                {% set month = app.user.category.training %}
+                {{ month - month|round ? month : month|round }} месяца
+            </div>
+        </li>
+        <li>
+            <div class="b_page_payment_info--img">
+                <img class="" src="/yp/img/icon_3.png" alt="">
+            </div>
+            <div class="b_page_payment_info--title">Стоимость обучения</div>
+            <div class="b_page_payment_info--info">
+                {% if sum_base != sum %}
+                    <span>{{ sum_base|number_format(0, ',', ' ') }} руб.</span>
+                {% endif %}
+                {{ sum|number_format(0, ',', ' ') }} руб.
+            </div>
+        </li>
+        {% if not app.user.regInfo['is_onetime'] %}
+        <li>
+            <div class="b_page_payment_info--img">
+                <img class="" src="/yp/img/icon_7.png" alt="">
+            </div>
+            <div class="b_page_payment_info--title">Первоначальный взнос</div>
+            <div class="b_page_payment_info--info">{{ sum_1|number_format(0, ',', ' ') }} руб.</div>
+        </li>
+        {% endif %}
+    </ul>
+</div>
+
+<div class="b_page_payment_contact">
+    <div class="b_col">
+        <div class="b_tabs_wrap">
+            <img src="/yp/img/road_map.jpg" alt="">
+        </div>
+    </div>
+
+    <div class="b_col">
+        <div class="b_scheme_contact">
+            <h4>
+                <img src="/yp/img/icon_2.png" alt="">
+                Адрес офиса:
+            </h4>
+            <p>
+                Товарищеский переулок, дом 3, <br>
+                вход в арку. <br>
+                <b>Ждём Вас для заключения договора и вручения подарка!</b>
+            </p>
+        </div>
+        <div class="b_scheme_contact">
+            <h4>
+                <img src="/yp/img/icon_phone.png" alt="">
+                Телефон:
+            </h4>
+            <p>
+                <span>+7 ({{ settings['contacts_phone1_prefix'] }}) {{ settings['contacts_phone1'] }}</span>
+            </p>
+        </div>
+        <div class="b_scheme_contact">
+            <h4>
+                <img src="/yp/img/icon_clock.png" alt="">
+                Мы работаем:
+            </h4>
+            <ul>
+                <li>с Понедельника по Пятницу с 11.00 до 21.00</li>
+                <li>по Субботам с 11.00 до 16.00.</li>
+                <li>Воскресенье – выходной</li>
+            </ul>
+        </div>
+        <div class="b_scheme_contact">
+            <h4>
+                <img src="/yp/img/icon_1.png" alt="">
+                Как добраться:
+            </h4>
+            <p>
+                Метро Марксистская, в подземном переходе
+                налево, подняться по лестнице в город и
+                повернуть налево, перейти по наземному
+                переходу улицу, далее повернуть направо,
+                пройти мимо аптеки 36.6 и обувного магазина
+                Chester повернуть в переулок, пройти 30 метров.
+                Вход в арку дома 3 с надписью Автошкола.
+            </p>
+        </div>
+    </div>
+</div>
+<div class="b_page_payment_info_attention m_margin">
+    <div class="b_page_payment_info_attention--title">Внимание:</div>
+    <ul>
+        <li>
+            Для получения подарка, заключения договора и начала обучения Вам необходимо приехать в офис
+            автошколы.
+        </li>
+        <li>
+            Оплата принимается наличными только за полный курс обучения, касса находится в центральном офисе
+            автошколы, который находится по адресу: м. "Марксистская" или "Таганская", Товарищеский пер, д.3.
+        </li>
+        <li>
+            Офис работает: <b>с понедельника по пятницу -  с 10.00 до 21.00, в субботу - с 11.00 до 16.00.</b>
+        </li>
+        <li>
+            При записи в автошколу <b>потребуется Ваш паспорт.</b> <span>Возьмите его с собой!</span>
+        </li>
+        <li>
+            Отдельно оплачиваются: учебные материалы (<b>2 150 руб.</b>) и медицинская справка (<b>1 200 руб.</b>).
+        </li>
+        <li>
+            После оплаты Вы сможете обучаться как очно (в выбранном филиале), так и дистанционно (на сайте).
+        </li>
+        <li>
+            Если Вы хотите получить максимальную скидку, оплатите обучение банковской картой на сайте,
+            нажав на кнопку "Оплатить с максимальной скидкой".
+        </li>
+    </ul>
+</div>
+<div class="b_page_payment_button">
+    <a href="{{ path('change_to_online') }}" class="e_btn_apply_gr"><span>Оплатить с максимальной скидкой</span></a>
+    <div class="b_page_payment_button--text">
+        При оплате на сайте: <span>{{ sum_base|number_format(0, ',', ' ') }} руб.</span> <b>&nbsp;{{ sum_online|number_format(0, ',', ' ') }} руб!</b>
+    </div>
+</div>
+{% endblock content %}

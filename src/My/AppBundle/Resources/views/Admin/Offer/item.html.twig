@@ -1,0 +1,60 @@
+{% extends 'AppBundle::admin.html.twig' %}
+{% trans_default_domain 'offer' %}
+
+{% block content %}
+    <h3>{{ (app.request.get('_route') == router_item_edit ? ('admin.'~entity_name_s~'_edit_title') : ('admin.'~entity_name_s~'_add_title'))|trans({}, 'messages') }}</h3>
+    <hr>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+
+    {% if regions and categories %}
+    <fieldset>
+        <legend>{{ 'offer_prices'|trans }}:</legend>
+        <div class="control-group">
+            <label></label>
+            <div class="controls">
+                <table cellpadding="5">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            {% for category in categories %}
+                                <th>{{ category }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for region in regions %}
+                        <tr>
+                            <th>{{ region.name }}</th>
+                            {% for category in categories %}
+                                <td>
+                                    <div class="input-append">
+                                        <input value="{{ prices[region.id][category.id] is defined ? prices[region.id][category.id] : 0 }}" type="text" class="span1" name="prices[{{ region.id }}][{{ category.id }}]">
+                                        <span class="add-on">{{ 'RUB'|trans({}, 'messages') }}</span>
+                                    </div>
+                                </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </fieldset>
+    {% endif %}
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-success">
+            <i class="fa fa-download"></i>
+            <span>{{ 'admin.buttons.save'|trans({}, 'messages') }}</span>
+        </button>
+        {% if app.request.get('_route') == router_item_edit and can_delete %}
+            <a href="{{ path(router_item_delete, { id: entity.id }) }}" class="btn btn-danger" onclick="return confirm('{{ 'you_sure'|trans({}, 'messages') }}')">
+                <i class="fa fa-trash-o"></i> <span>{{ 'admin.buttons.delete'|trans({}, 'messages') }}</span>
+            </a>
+        {% endif %}
+        <a class="btn pull-right" href="{{ path(router_list) }}"><i class="fa fa-arrow-left"></i> {{ 'admin.buttons.back_to_list'|trans({}, 'messages') }}</a>
+    </div>
+    {{ form_end(form) }}
+{% endblock content %}

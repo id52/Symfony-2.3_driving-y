@@ -1,0 +1,21 @@
+{% extends 'FOSUserBundle::layout.html.twig' %}
+
+{% block fos_user_content %}
+<div class="form_wrapper">
+    <section class="form--inner">
+        <h4 class="form--h clear-h">Смена e-mail:</h4>
+        {{ form_start(form) }}
+            <div class="e_form_group m_border_bottom">
+                {{ form_label(form.email, 'E-mail') }}
+                {{ form_widget(form.email) }}
+                {{ form_errors(form.email) }}
+                <p>Подтвердите ваш e-mail или введите новый, на который будет отправлено письмо. Перейдите по ссылке из письма для подтверждения регистрации.</p>
+            </div>
+            <div class="e_form_group">
+                <button type="submit" class="e_send_form">Отправить</button>
+            </div>
+        {{ form_errors(form) }}
+        {{ form_end(form) }}
+    </section>
+</div>
+{% endblock fos_user_content %}

@@ -1,0 +1,22 @@
+{% extends 'AppBundle::layout_new.html.twig' %}
+
+{% block content %}
+<nav class="path">
+    <a href="{{ path('homepage') }}">{{ 'titles.homepage'|trans }}</a>
+    » <strong>{{ 'titles.payments'|trans }}</strong>
+</nav>
+
+<section>
+    <div class="wid">{{ settings['payment_fail'] is defined ? settings['payment_fail']|raw : '' }}</div>
+</section>
+{% endblock content %}
+
+{% block js %}
+<script>
+$(function() {
+    window.setTimeout(function() {
+        location.href = '{{ is_granted('ROLE_USER_PAID') ? path('my_payments') : path('homepage') }}';
+    }, 2000);
+});
+</script>
+{% endblock %}

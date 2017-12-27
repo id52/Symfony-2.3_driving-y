@@ -1,0 +1,343 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=1300" />
+    <title>{% block title %}{{ 'project.name'|trans }} — {{ 'project.slogan'|trans }}{% endblock %}</title>
+    <meta name="keywords" content="{% block meta_keywords '' %}" />
+    <meta name="description" content="{% block meta_description '' %}" />
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,300italic,400italic,700,700italic&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <link href="/v2/css/style.css" rel="stylesheet" type="text/css">
+    <link href="/v2/css/style-fix.css" rel="stylesheet" type="text/css">
+    <link href="/v2/css/header.css" rel="stylesheet" type="text/css">
+    <link href="/yp/css/main.css" rel="stylesheet" type="text/css">
+    <!--[if lte IE 8]>
+    <link href="/v2/css/ie8.css" rel="stylesheet" type="text/css" />
+    {% block css '' %}
+    <script type="text/javascript" src="/v2/js/PIE.js"></script>
+    <script type="text/javascript" src="/v2/js/html5support.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="/v2/js/jquery.js"></script>
+    <script type="text/javascript" src="/v2/js/jquery-ui.js"></script>
+    <script type="text/javascript" src="/v2/js/jquery.main.js"></script>
+</head>
+<body>
+
+{% include 'AppBundle::_server_label.html.twig' %}
+
+{% block start_content '' %}
+
+<div class="modal border-red reg-done" id="js_alert">
+    <div class="content"></div>
+    <div class="links"><span class="link bg-green btn-close">Закрыть</span></div>
+</div>
+
+{% if not app.user %}
+    <div class="modal border-green reg-done" id="modal01">
+        <div class="title">Новый пользователь создан</div>
+        На Ваш электронный адрес<br>
+        <strong></strong><br>
+        отправлено письмо. Перейдите по ссылке из письма, для подтверждения регистрации
+        <div class="links"><span class="link bg-green btn-close">Закрыть</span></div>
+    </div>
+
+    <div class="modal border-green reg-done" id="modal02">
+        <div class="title">Восстановление пароля</div>
+        На Ваш электронный адрес<br>
+        <strong></strong><br>
+        отправлено письмо. Перейдите по ссылке из письма, для восстановления пароля.
+        <div class="links"><span class="link bg-green btn-close">Закрыть</span></div>
+    </div>
+
+    {% include 'AppBundle::_form_auth.html.twig' %}
+{% endif %}
+
+{% if paid_notify is defined %}
+    <div id="paid_notify_modal" class="modal border-red">
+        <div class="notice">
+            <div class="title">{{ paid_notify_title }}</div>
+            {{ paid_notify_body|raw }}
+            <div class="links">
+                <a href="{{ path('my_payments') }}" class="bg-green">{{ 'paid_notify.pay'|trans }}</a>
+            </div>
+        </div>
+        <span class="close"></span>
+    </div>
+{% endif %}
+
+{% if discount_2_notify is defined %}
+    <div id="discount_2_modal" class="modal border-green">
+        <div class="notice">
+            {{ discount_2_notify_message|raw }}
+        </div>
+        <div class="bottom links"><span class="link bg-green check-link btn-close">Спасибо, все понятно</span>
+        </div>
+    </div>
+{% endif %}
+
+{% if before_access_time_end_after_2_payment_popup_title is defined %}
+    <div class="modal border-red reg-done" id="before_access_time_end_after_2_payment_popup">
+        <div class="title">{{ before_access_time_end_after_2_payment_popup_title }}</div>
+        <div class="content">{{ before_access_time_end_after_2_payment_popup_text|raw }}</div>
+        <div class="links"><span class="link bg-green btn-close">Закрыть</span></div>
+    </div>
+{% endif %}
+
+<div class="b_page">
+    <div class="wrapper_page_content">
+        <div class="b_header">
+            <div class="b_inner">
+                <a href="http://ya-prava.ru/" class="e_logo_header">
+                    <img src="/yp/img/logo_header.png" alt="">
+                </a>
+                <div class="b_header_butons">
+                    <div class="b_header_info">
+                        {% if app.user %}
+                            <a href="{{ path('homepage') }}" class="e_header_name">
+                            {{ app.user.lastName~' '~app.user.firstName|slice(0,1)~'.' }}</a>
+                        {% endif %}
+                        <span class="e_header--phone">
+                            <a href="tel:+7{{ settings['contacts_phone1_prefix'] }}{{ settings['contacts_phone1']|replace({ '-': '' }) }}" class="ya-phone">
+                                +7 ({{ settings['contacts_phone1_prefix'] }}) {{ settings['contacts_phone1'] }}
+                            </a>
+                        </span>
+                    </div>
+                    <div>
+                        {% if app.user %}
+                            {% if is_granted('ROLE_MOD') %}
+                                <a href="{{ path('admin') }}" class="e_btn e_btn_turquoise">В админку</a>
+                            {% endif %}
+                            <a href="{{ path('fos_user_security_logout') }}" class="e_btn e_btn_red ">Выход</a>
+                        {% else %}
+                            <a href="{{ path('fos_user_security_login') }}" class="e_btn e_btn_turquoise">Вход</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="b_wrapper" style="margin-top:30px">
+            <div class="b_container">
+
+                <div class="content">
+                    {% block content '' %}
+
+                    {% if app.user %}
+                        <div class="aside">
+                            {% if is_granted('ROLE_USER_PAID') %}
+                                {% include 'AppBundle::menu_new.html.twig' only %}
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="footer-place"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="b_footer">
+        <div class="b_inner">
+            <div class="footer--content">
+                <div class="footer--item">
+                    <img alt="" src="/yp/img/diamond_footer.png">
+                </div>
+                <div class="footer--item">
+                    ЯПрава.ру &copy; <span>Все права защищены.</span>
+                    <span class="e_footer_phone">
+                        <a href="tel:+7{{ settings['contacts_phone1_prefix'] }}{{ settings['contacts_phone1']|replace({ '-': '' }) }}" class="ya-phone">
+                            +7 ({{ settings['contacts_phone1_prefix'] }}){{ settings['contacts_phone1'] }}
+                        </a>
+                        <a href="mailto:info@ya-prava.ru" class="e_footer_email">info@ya-prava.ru</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+{% block end_content '' %}
+
+<script>
+function js_alert(content, success) {
+    var block = $('#js_alert');
+    $('.content', block).html(content);
+    if (success) {
+        block.removeClass('border-red').addClass('border-green');
+    }
+    $.simplebox('#js_alert');
+}
+</script>
+
+{% block js '' %}
+
+<script src="/v2/js/jquery.countdown.js"></script>
+<script src="/v2/js/jquery.countdown-ru.js"></script>
+<script>
+$(function () {
+    {% if not app.user %}
+        var auth01 = $('#auth01');
+
+        $('.auth-link').click(function(e) {
+            e.preventDefault();
+            auth01.find('a.tab[href=#tab1]').click();
+            $.simplebox('#auth01');
+        });
+
+        var error = function(el, error) {
+            var input = el.closest('.input');
+            $('.err-text span', input).html(error);
+            $('input', input).addClass('error');
+            input.addClass('error');
+            $('.err-text', input).show();
+        };
+
+        $('form[action="{{ path('fos_user_security_check') }}"]', auth01).submit(function(e) {
+            e.preventDefault();
+
+            $('.input').removeClass('error');
+            $('.input input').removeClass('error');
+            $('.err-text').hide();
+
+            var username = $('#js_login_username');
+            var password = $('#js_login_password');
+
+            if (!username.val() || !password.val()) {
+                if (!username.val()) {
+                    error(username, 'Нужно указать e-mail');
+                }
+                if (!password.val()) {
+                    error(password, 'Нужно указать пароль');
+                }
+            } else {
+                $.post($(this).attr('action'), $(this).serialize(), function(data) {
+                    if (data.error) {
+                        error(username, '');
+                        error(password, data.error);
+                    } else {
+                        location.assign('{{ path('homepage') }}');
+                    }
+                });
+            }
+        });
+
+        var discount_data = eval({{ discount_data|json_encode|raw }});
+
+        var reg_region = $('#reg-region');
+        var reg_category = $('#reg-category');
+
+        for (var region_id in discount_data) {
+            if (discount_data.hasOwnProperty(region_id)) {
+                var region = discount_data[region_id];
+                reg_region.append('<option value="' + region_id + '">' + region.name + '</option>');
+            }
+        }
+        reg_region.trigger('refresh');
+
+        var change_reg_region = function() {
+            reg_category.html('');
+            var region_id = reg_region.val();
+            var region = discount_data[region_id];
+            for (var category_id in region.categories) {
+                if (region.categories.hasOwnProperty(category_id)) {
+                    var category = region.categories[category_id];
+                    reg_category.append('<option value="' + category_id + '" data-img="' + category.image + '">' + category.name + '</option>');
+                }
+            }
+            reg_category.trigger('refresh');
+        };
+        reg_region.change(change_reg_region);
+        change_reg_region();
+
+        $('form[action="{{ path('fos_user_resetting_send_email') }}"]', auth01).submit(function(e) {
+            e.preventDefault();
+
+            $('.input').removeClass('error');
+            $('.input input').removeClass('error');
+            $('.err-text').hide();
+
+            $.post($(this).attr('action'), $(this).serialize(), function(data) {
+                if (data.errors) {
+                    for(var i in data.errors) {
+                        if (data.errors.hasOwnProperty(i)) {
+                            error($('#js_reset_' + i), data.errors[i]);
+                        }
+                    }
+                } else {
+                    var email = $('#js_reset_username').val();
+                    $('#modal02').find('strong').html(email);
+                    $.simplebox('#modal02');
+                }
+            });
+        });
+
+        $('form[action="{{ path('fos_user_registration_register') }}"]', auth01).submit(function(e) {
+            e.preventDefault();
+
+            $('.input').removeClass('error');
+            $('.input input').removeClass('error');
+            $('.err-text').hide();
+
+            $.post($(this).attr('action'), $(this).serialize(), function(data) {
+                if (data.errors) {
+                    for(var i in data.errors) {
+                        if (data.errors.hasOwnProperty(i)) {
+                            error($('#js_reg_' + i), data.errors[i]);
+                        }
+                    }
+                    $('#js_reg_captcha').closest('.row').find('img').attr('src', '{{ path('innocead_captcha', {'random': '1' }) }}'+Math.round(Math.random(0)*10000000000));
+                } else {
+                    var email = $('#js_reg_email').val();
+                    $('#modal01').find('strong').html(email);
+                    $.simplebox('#modal01');
+                }
+            });
+        });
+    {% endif %}
+
+    {% if paid_notify is defined %}
+        $('#paid_notify_modal').find('span.timeleft').countdown({
+            until: new Date('{{ paid_notify_end_time|date('r') }}'),
+            format: 'Od',
+            layout: '{dn} {dl}'
+        });
+        $.simplebox('#paid_notify_modal');
+    {% endif %}
+
+    {% if discount_2_notify is defined %}
+        var discount_2_modal = $('#discount_2_modal');
+        $('.btn-close', discount_2_modal).on('click', function() {
+            {% set path = 'my_read_discount_2_'~discount_2_notify %}
+            $.get('{{ path(path) }}');
+        });
+
+        var discount_2_countdown = $('.discount_2_countdown');
+        discount_2_countdown.countdown({
+            until: new Date(discount_2_countdown.data('time')),
+            layout: '{d<} {dn} {dl} {d>} {hn} {hl} {mn} {ml}'
+        });
+
+        $.simplebox('#discount_2_modal');
+    {% endif %}
+
+    {% if before_access_time_end_after_2_payment_popup_title is defined %}
+        $.simplebox('#before_access_time_end_after_2_payment_popup', { overlay: { closeClick: false } });
+        $('.btn-close', '#before_access_time_end_after_2_payment_popup').click(function(e) {
+            e.preventDefault();
+            $.post('{{ path('my_ajax_popup_info_paid_2') }}');
+        });
+    {% endif %}
+
+    {% if _server_type is defined and _server_type == 'prod' and (payment2_goal is defined or payment3_goal is defined) %}
+        yaCounter37278030.reachGoal('PAY');
+        ga('send', 'event', 'Pay', 'Send', '', 0);
+    {% endif %}
+});
+</script>
+
+{% if settings['counters_yandex'] is defined %}
+<script>{{ settings['counters_yandex']|raw }}</script>
+{% endif %}
+
+</body>
+</html>

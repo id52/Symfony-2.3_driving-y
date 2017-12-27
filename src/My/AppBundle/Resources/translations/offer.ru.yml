@@ -1,0 +1,8 @@
+offer_is_public: Отображать пользователям?
+offer_title: Заголовок
+offer_subtitle: Подзаголовок
+offer_desc: Краткое описание
+offer_description: Полное описание
+offer_started_at: Начало
+offer_ended_at: Конец
+offer_prices: Стоимость обучения по спецпредложению (в админке)

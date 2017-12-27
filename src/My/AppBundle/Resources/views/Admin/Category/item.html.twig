@@ -1,0 +1,129 @@
+{% extends 'AppBundle::admin.html.twig' %}
+{% trans_default_domain 'category' %}
+
+{% block content %}
+    <h3>{{ (app.request.get('_route') == router_item_edit ? ('admin.'~entity_name_s~'_edit_title') : ('admin.'~entity_name_s~'_add_title'))|trans({}, 'messages') }}</h3>
+    <hr>
+
+    {{ form_start(form) }}
+        {{ form_row(form.name) }}
+
+        <div class="control-group">
+            {{ form_label(form.theory) }}
+            <div class="controls">
+                <div class="input-append">
+                    {{ form_widget(form.theory) }}
+                    <span class="add-on">ч.</span>
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label(form.practice) }}
+            <div class="controls">
+                <div class="input-append">
+                    {{ form_widget(form.practice) }}
+                    <span class="add-on">ч.</span>
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label(form.training) }}
+            <div class="controls">
+                <div class="input-append">
+                    {{ form_widget(form.training) }}
+                    <span class="add-on">мес.</span>
+                </div>
+            </div>
+        </div>
+
+        {% if regions %}
+            {% for region in regions %}
+            <fieldset>
+                <legend>{{ region.name }}:</legend>
+                <div class="control-group">
+                    <label for="price_{{ region.id }}_active" class="control-label">Активна?</label>
+                    <div class="controls">
+                        <input type="checkbox" {{ prices[region.id] is defined and prices[region.id].active ? ' checked="checked"' : '' }} name="prices[{{ region.id }}][active]" id="price_{{ region.id }}_active">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="price_{{ region.id }}_base" class="control-label">Базовая цена:</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input value="{{ prices[region.id] is defined ? prices[region.id].base : 0 }}" type="text" class="span1" name="prices[{{ region.id }}][base]" id="price_{{ region.id }}_base">
+                            <span class="add-on">{{ 'RUB'|trans({}, 'messages') }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="price_{{ region.id }}_teor" class="control-label">Цена за теорию:</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input value="{{ prices[region.id] is defined ? prices[region.id].teor : 0 }}" type="text" class="span1" name="prices[{{ region.id }}][teor]" id="price_{{ region.id }}_teor">
+                            <span class="add-on">{{ 'RUB'|trans({}, 'messages') }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="price_{{ region.id }}_offline_1" class="control-label">Цена в офисе (часть 1):</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input value="{{ prices[region.id] is defined ? prices[region.id].offline1 : 0 }}" type="text" class="span1" name="prices[{{ region.id }}][offline_1]" id="price_{{ region.id }}_offline_1">
+                            <span class="add-on">{{ 'RUB'|trans({}, 'messages') }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="price_{{ region.id }}_offline_2" class="control-label">Цена в офисе (часть 2):</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input value="{{ prices[region.id] is defined ? prices[region.id].offline2 : 0 }}" type="text" class="span1" name="prices[{{ region.id }}][offline_2]" id="price_{{ region.id }}_offline_2">
+                            <span class="add-on">{{ 'RUB'|trans({}, 'messages') }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="price_{{ region.id }}_online_onetime" class="control-label">Цена через интернет (единоразовая):</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input value="{{ prices[region.id] is defined ? prices[region.id].onlineOnetime : 0 }}" type="text" class="span1" name="prices[{{ region.id }}][online_onetime]" id="price_{{ region.id }}_online_onetime">
+                            <span class="add-on">{{ 'RUB'|trans({}, 'messages') }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="price_{{ region.id }}_online_1" class="control-label">Цена через интернет (часть 1):</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input value="{{ prices[region.id] is defined ? prices[region.id].online1 : 0 }}" type="text" class="span1" name="prices[{{ region.id }}][online_1]" id="price_{{ region.id }}_online_1">
+                            <span class="add-on">{{ 'RUB'|trans({}, 'messages') }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="price_{{ region.id }}_online_2" class="control-label">Цена через интернет (часть 2):</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input value="{{ prices[region.id] is defined ? prices[region.id].online2 : 0 }}" type="text" class="span1" name="prices[{{ region.id }}][online_2]" id="price_{{ region.id }}_online_2">
+                            <span class="add-on">{{ 'RUB'|trans({}, 'messages') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            {% endfor %}
+        {% endif %}
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-success">
+                <i class="fa fa-download"></i>
+                <span>{{ 'admin.buttons.save'|trans({}, 'messages') }}</span>
+            </button>
+            {% if app.request.get('_route') == router_item_edit %}
+                <a href="{{ path(router_item_delete, { id: entity.id }) }}" class="btn btn-danger" onclick="return confirm('{{ 'you_sure'|trans({}, 'messages') }}')">
+                    <i class="fa fa-trash-o"></i> <span>{{ 'admin.buttons.delete'|trans({}, 'messages') }}</span>
+                </a>
+            {% endif %}
+            <a class="btn pull-right" href="{{ path(router_list) }}"><i class="fa fa-arrow-left"></i> {{ 'admin.buttons.back_to_list'|trans({}, 'messages') }}</a>
+        </div>
+    {{ form_end(form) }}
+{% endblock content %}

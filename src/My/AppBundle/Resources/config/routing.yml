@@ -1,0 +1,207 @@
+homepage:
+    path:  /
+    defaults: { _controller: AppBundle:Default:index }
+
+fos_user_profile_show:
+    path:  /
+    defaults: { _controller: AppBundle:Default:index }
+
+image_ajax:
+    path:  /image-ajax/
+    defaults: { _controller: AppBundle:Default:imageAjax }
+
+change_to_online:
+    path: /change_to_online/
+    defaults: { _controller: AppBundle:Default:changeToOnline }
+
+my_change_password:
+    path: /my/profile/change_password/
+    defaults: { _controller: AppBundle:My:changePassword}
+
+my_profile:
+    path:  /my/profile/
+    defaults: { _controller: AppBundle:My:profile }
+
+my_profile_edit:
+    path:  /my/profile/edit/
+    defaults: { _controller: AppBundle:My:profileEdit }
+
+my_profile_photo_ajax:
+    path:  /my/profile/photo-ajax/
+    defaults: { _controller: AppBundle:My:profilePhotoAjax }
+
+my_profile_photo_update_ajax:
+    path:  /my/profile/photo-update-ajax/
+    defaults: { _controller: AppBundle:My:profilePhotoUpdateAjax }
+
+my_profile_photo_view_ajax:
+    path:  /my/profile/photo-view-ajax/
+    defaults: { _controller: AppBundle:My:profilePhotoViewAjax }
+
+my_profile_photo_edit_ajax:
+    path:  /my/profile/photo-edit-ajax/
+    defaults: { _controller: AppBundle:My:profilePhotoEditAjax }
+
+my_mobile_status_ajax:
+    path:  /my/mobile-status-ajax/
+    defaults: { _controller: AppBundle:My:mobileStatusAjax }
+
+my_mobile_confirm_ajax:
+    path:  /my/mobile-confirm-ajax/
+    defaults: { _controller: AppBundle:My:mobileConfirmAjax }
+
+my_notifies:
+    path:  /my/notifies/
+    defaults: { _controller: AppBundle:My:notifies }
+
+my_notify_read:
+    path:  /my/notifies/{id}/
+    defaults: { _controller: AppBundle:My:notifyRead }
+    requirements:
+        id: \d+
+
+my_payments:
+    path:  /my/payments/
+    defaults: { _controller: AppBundle:My:payments }
+
+my_payments_pay:
+    path:  /my/payments/pay/
+    defaults: { _controller: AppBundle:My:paymentsPay }
+
+my_test:
+    path:  /my/test/
+    defaults: { _controller: AppBundle:My:test }
+
+my_test_next_question_ajax:
+    path:  /my/test/next-question-ajax/
+    defaults: { _controller: AppBundle:My:test, next: true }
+
+my_test_quit:
+    path:  /my/test/quit/
+    defaults: { _controller: AppBundle:My:testQuit }
+
+my_test_comment:
+    path:  /my/test/comment/
+    defaults: { _controller: AppBundle:My:testComment }
+
+my_test_continue:
+    path:  /my/test/continue/
+    defaults: { _controller: AppBundle:My:testContinue }
+
+my_test_knowledge:
+    path:  /my/test_knowledge/
+    defaults: { _controller: AppBundle:My:testKnowledge }
+
+my_test_knowledge_next_question_ajax:
+    path:  /my/test_knowlege/next-question-ajax/
+    defaults: { _controller: AppBundle:My:testKnowledge, next: true }
+
+my_test_knowledge_quit:
+    path:  /my/test_knowledge/quit/
+    defaults: { _controller: AppBundle:My:testKnowledgeQuit }
+
+my_test_knowledge_comment:
+    path:  /my/test_knowledge/comment/
+    defaults: { _controller: AppBundle:My:testKnowledgeComment }
+
+my_test_knowledge_continue:
+    path:  /my/test_knowledge/continue/
+    defaults: { _controller: AppBundle:My:testKnowledgeContinue }
+
+my_stat:
+    path:  /my/stat/
+    defaults: { _controller: AppBundle:My:stat }
+
+my_unsubscribe_payment_1:
+    path: /unsubscribe_payment_1/{email}
+    defaults: { _controller: AppBundle:Default:unsubscribePayment1 }
+
+my_unsubscribe_payment_2:
+    path: /unsubscribe_payment_2/{email}
+    defaults: { _controller: AppBundle:Default:unsubscribePayment2 }
+
+my_unsubscribe_payment_3:
+    path: /unsubscribe_payment_3/{email}
+    defaults: { _controller: AppBundle:Default:unsubscribePayment3 }
+
+my_read_discount_2_first:
+    path: /read_discount_2/first
+    defaults: { _controller: AppBundle:My:readDiscount2First }
+
+my_read_discount_2_second:
+    path: /read_discount_2/second
+    defaults: { _controller: AppBundle:My:readDiscount2Second }
+
+my_unsubscribe_mailing:
+    path: /unsubscribe_mailing/{email}
+    defaults: { _controller: AppBundle:Default:unsubscribeMailing }
+
+my_unsubscribe_overdue:
+    path: /unsubscribe_overdue/{email}
+    defaults: { _controller: AppBundle:Default:unsubscribeOverdue }
+
+my_feedback_teacher:
+    path:  /my/feedback-teacher/
+    defaults: { _controller: AppBundle:My:feedbackTeacher }
+
+my_feedback_teacher_dialog_show:
+    path:  /my/feedback-teacher/{id}/
+    defaults: { _controller: AppBundle:My:supportDialogShow }
+    requirements:
+        id: \d+
+
+my_feedback_teacher_new:
+    path:  /my/feedback-teacher/new/
+    defaults: { _controller: AppBundle:My:feedbackTeacherNew }
+
+my_support_dialogs:
+    path:  /my/support/
+    defaults: { _controller: AppBundle:My:supportDialogs }
+
+my_support_dialog_show:
+    path:  /my/support/{id}/
+    defaults: { _controller: AppBundle:My:supportDialogShow }
+    requirements:
+        id: \d+
+
+my_support_new:
+    path:  /my/support/new/
+    defaults: { _controller: AppBundle:My:supportNew }
+
+my_ajax_popup_info_paid_2:
+    path:  /my/ajax_popup_info_paid_2/
+    defaults: { _controller: AppBundle:My:ajaxPopupInfoPaid2 }
+
+my_pass:
+    path:  /my/pass/
+    defaults: { _controller: AppBundle:My:pass }
+
+my_pass_print:
+    path:  /my/pass/print/
+    defaults: { _controller: AppBundle:My:passPrint }
+
+my_get_certificate:
+    path:  /my/get-certificate/
+    defaults: { _controller: AppBundle:My:getCertificate }
+
+my_certificate:
+    path:  /my/certificate/
+    defaults: { _controller: AppBundle:My:pdf }
+
+pay:
+    path:  /pay-{type}/
+    defaults: { _controller: AppBundle:Default:pay }
+    requirements:
+        type: psb|robokassa
+
+pay_cancel:
+    path:  /pay-cancel/
+    defaults: { _controller: AppBundle:Default:payCancel }
+
+promo:
+    path:  /promo/
+    defaults: { _controller: AppBundle:Default:promo }
+
+my_webinars:
+    path:  /my/webinars/
+    defaults: { _controller: AppBundle:My:webinars }

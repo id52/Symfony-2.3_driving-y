@@ -1,0 +1,33 @@
+My\AppBundle\Entity\CategoryPrice:
+    type: entity
+    table: category_prices
+    repositoryClass: My\AppBundle\Repository\CategoryPriceRepository
+    id:
+        category:
+            associationKey: true
+        region:
+            associationKey: true
+    fields:
+        active:
+            type: boolean
+        base:
+            type: integer
+        teor:
+            type: integer
+        offline_1:
+            type: integer
+        offline_2:
+            type: integer
+        online_onetime:
+            type: integer
+        online_1:
+            type: integer
+        online_2:
+            type: integer
+    manyToOne:
+        category:
+            targetEntity: Category
+            inversedBy: categories_prices
+        region:
+            targetEntity: Region
+            inversedBy: categories_prices

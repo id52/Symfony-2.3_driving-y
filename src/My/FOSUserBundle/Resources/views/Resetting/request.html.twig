@@ -1,0 +1,23 @@
+{% extends 'AppBundle::layout_m_clear.html.twig' %}
+
+{% block title %}Сброс пароля | {{ 'project.name'|trans }}{% endblock title %}
+
+{% block content %}
+<div class="form_wrapper">
+    <section class="form--inner">
+        <h4 class="form--h clear-h">Сброс пароля:</h4>
+        <form action="{{ path('fos_user_resetting_send_email') }}" method="post">
+            <div class="e_form_group m_border_bottom">
+                <label for="username">{{ 'resetting.request.username'|trans({}, 'FOSUserBundle') }}</label>
+                <input class="field ie-css3" type="text" id="username" name="username" required="required" placeholder="Адрес эл. почты" />
+                {% if invalid_username is defined %}
+                    <label for="username" class="error">{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}, 'FOSUserBundle') }}</label>
+                {% endif %}
+            </div>
+            <div class="e_form_group">
+                <button type="submit" class="e_send_form">{{ 'resetting.request.submit'|trans({}, 'FOSUserBundle') }}</button>
+            </div>
+        </form>
+    </section>
+</div>
+{% endblock content %}

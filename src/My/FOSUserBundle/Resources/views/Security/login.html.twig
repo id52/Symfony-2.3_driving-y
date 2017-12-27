@@ -1,0 +1,30 @@
+{% extends 'AppBundle::layout_m_clear.html.twig' %}
+
+{% block title %}Вход | {{ 'project.name'|trans }}{% endblock title %}
+
+{% block content %}
+<div class="form_wrapper">
+    <section class="form--inner">
+        <h4 class="form--h clear-h">Вход:</h4>
+        <form action="{{ path('fos_user_security_check') }}" method="post">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+            <input type="hidden" id="remember_me" name="_remember_me" value="1" />
+            <div class="e_form_group">
+                <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
+                <input id="username" name="_username" type="text" value="{{ last_username }}" required="required" placeholder="Адрес эл. почты" />
+            </div>
+            <div class="e_form_group m_border_bottom">
+                <label for="password">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
+                <input id="password" name="_password" type="password" required="required" placeholder="Пароль" />
+                {% if error %}
+                    <label for="password" class="error">{{ error|trans({}, 'FOSUserBundle')|raw }}</label>
+                {% endif %}
+            </div>
+            <div class="e_form_group">
+                <button type="submit" class="e_send_form">{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}</button>
+                <a href="{{ path('fos_user_resetting_check_email') }}" class="e_cancel">Забыли пароль?</a>
+            </div>
+        </form>
+    </section>
+</div>
+{% endblock content %}

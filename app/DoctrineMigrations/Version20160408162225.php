@@ -1,0 +1,280 @@
+<?php
+
+namespace Application\Migrations;
+
+use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\DBAL\Schema\Schema;
+
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+class Version20160408162225 extends AbstractMigration
+{
+    /**
+     * @param Schema $schema
+     */
+    public function up(Schema $schema)
+    {
+        // this up() migration is auto-generated, please modify it to your needs
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+
+        $this->addSql('CREATE TABLE support_categories (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, parent_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, type ENUM(\'category\', \'teacher\') NOT NULL COMMENT \'(DC2Type:enumsupportcategory)\', t_versions LONGTEXT DEFAULT NULL, UNIQUE INDEX UNIQ_1847824AA76ED395 (user_id), INDEX IDX_1847824A727ACA70 (parent_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE sites (id INT AUTO_INCREMENT NOT NULL, region_id INT DEFAULT NULL, title VARCHAR(255) NOT NULL, coords LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', active TINYINT(1) NOT NULL, active_auth TINYINT(1) NOT NULL, _show TINYINT(1) NOT NULL, show_auth TINYINT(1) NOT NULL, updated_at DATETIME NOT NULL, created_at DATETIME NOT NULL, INDEX IDX_BC00AA6398260155 (region_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE support_dialogs (id INT AUTO_INCREMENT NOT NULL, category_id INT DEFAULT NULL, last_moderator_id INT DEFAULT NULL, user_id INT DEFAULT NULL, theme_id INT DEFAULT NULL, answered TINYINT(1) NOT NULL, created_at DATETIME NOT NULL, last_message_time DATETIME NOT NULL, last_message_text LONGTEXT NOT NULL, limit_answer_date DATE DEFAULT NULL, user_read TINYINT(1) NOT NULL, INDEX IDX_5C2A65B12469DE2 (category_id), INDEX IDX_5C2A65BD959D900 (last_moderator_id), INDEX IDX_5C2A65BA76ED395 (user_id), INDEX IDX_5C2A65B59027487 (theme_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE services (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, type ENUM(\'\') DEFAULT NULL COMMENT \'(DC2Type:enumservice)\', PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE final_exams_logs (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, started_at DATETIME NOT NULL, ended_at DATETIME DEFAULT NULL, questions LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', answers LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', passed TINYINT(1) NOT NULL, INDEX IDX_8CB1316FA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE flash_blocks (id INT AUTO_INCREMENT NOT NULL, _key VARCHAR(255) NOT NULL, title VARCHAR(255) NOT NULL, is_simple TINYINT(1) NOT NULL, UNIQUE INDEX UNIQ_B8C38DADC7FBB253 (_key), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE test_emails (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE filials (id INT AUTO_INCREMENT NOT NULL, region_id INT DEFAULT NULL, title VARCHAR(255) NOT NULL, url VARCHAR(255) NOT NULL, address VARCHAR(255) NOT NULL, station VARCHAR(255) DEFAULT NULL, work_time VARCHAR(255) DEFAULT NULL, phones LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', emails LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', coords LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', address_geo VARCHAR(255) DEFAULT NULL, map_code LONGTEXT DEFAULT NULL, counters_code LONGTEXT DEFAULT NULL, active TINYINT(1) NOT NULL, active_auth TINYINT(1) NOT NULL, _show TINYINT(1) NOT NULL, show_auth TINYINT(1) NOT NULL, updated_at DATETIME NOT NULL, created_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_94C7FCCF47645AE (url), INDEX IDX_94C7FCC98260155 (region_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE offers (id INT AUTO_INCREMENT NOT NULL, title VARCHAR(255) NOT NULL, subtitle VARCHAR(255) DEFAULT NULL, _desc LONGTEXT NOT NULL, description LONGTEXT NOT NULL, started_at DATE DEFAULT NULL, ended_at DATE DEFAULT NULL, is_public TINYINT(1) NOT NULL, updated_at DATETIME NOT NULL, created_at DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE support_messages (id INT AUTO_INCREMENT NOT NULL, dialog_id INT DEFAULT NULL, user_id INT DEFAULT NULL, text LONGTEXT NOT NULL, created_at DATETIME NOT NULL, INDEX IDX_6FB495A95E46C4E2 (dialog_id), INDEX IDX_6FB495A9A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE regions_places (id INT AUTO_INCREMENT NOT NULL, region_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, INDEX IDX_B2578D4898260155 (region_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE category_prices (category_id INT NOT NULL, region_id INT NOT NULL, price_edu INT NOT NULL, price_drv INT NOT NULL, price_drv_at INT NOT NULL, active TINYINT(1) NOT NULL, INDEX IDX_EB23A72212469DE2 (category_id), INDEX IDX_EB23A72298260155 (region_id), PRIMARY KEY(category_id, region_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE feedback_emails (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, subjects LONGTEXT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE users_old_mobile_phones (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, phone VARCHAR(255) NOT NULL, INDEX IDX_6EE221D7A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE regions (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, discount_1_amount INT NOT NULL, discount_1_date_from DATE DEFAULT NULL, discount_1_date_to DATE DEFAULT NULL, discount_1_timer_period INT NOT NULL, discount_2_first_amount INT NOT NULL, discount_2_first_days INT NOT NULL, discount_2_second_amount INT NOT NULL, discount_2_second_days INT NOT NULL, discount_2_between_period_days INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE pass_filials (id INT AUTO_INCREMENT NOT NULL, region_id INT DEFAULT NULL, title VARCHAR(255) NOT NULL, address VARCHAR(255) NOT NULL, station VARCHAR(255) DEFAULT NULL, work_time VARCHAR(255) DEFAULT NULL, phones LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', emails LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', coords LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', address_geo VARCHAR(255) DEFAULT NULL, map_code LONGTEXT DEFAULT NULL, active TINYINT(1) NOT NULL, groups LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', updated_at DATETIME NOT NULL, created_at DATETIME NOT NULL, INDEX IDX_2B38E3098260155 (region_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE images (id INT AUTO_INCREMENT NOT NULL, question_id INT DEFAULT NULL, category_id INT DEFAULT NULL, subject_id INT DEFAULT NULL, offer_id INT DEFAULT NULL, filial_id INT DEFAULT NULL, site_id INT DEFAULT NULL, flash_block_item_id INT DEFAULT NULL, review_id INT DEFAULT NULL, pass_filial_id INT DEFAULT NULL, how_work_id INT DEFAULT NULL, file VARCHAR(255) NOT NULL, updated_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_E01FBE6A8C9F3610 (file), UNIQUE INDEX UNIQ_E01FBE6A1E27F6BF (question_id), UNIQUE INDEX UNIQ_E01FBE6A12469DE2 (category_id), UNIQUE INDEX UNIQ_E01FBE6A23EDC87 (subject_id), UNIQUE INDEX UNIQ_E01FBE6A53C674EE (offer_id), UNIQUE INDEX UNIQ_E01FBE6A299B2577 (filial_id), UNIQUE INDEX UNIQ_E01FBE6AF6BD1646 (site_id), UNIQUE INDEX UNIQ_E01FBE6A4E976491 (flash_block_item_id), UNIQUE INDEX UNIQ_E01FBE6A3E2E969B (review_id), UNIQUE INDEX UNIQ_E01FBE6A5B2842B3 (pass_filial_id), UNIQUE INDEX UNIQ_E01FBE6A9FE05ABF (how_work_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE questions (id INT AUTO_INCREMENT NOT NULL, theme_id INT DEFAULT NULL, is_pdd TINYINT(1) NOT NULL, num VARCHAR(255) DEFAULT NULL, text LONGTEXT NOT NULL, description LONGTEXT DEFAULT NULL, answers LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', INDEX IDX_8ADC54D559027487 (theme_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE training_versions_questions (question_id INT NOT NULL, version_id INT NOT NULL, INDEX IDX_9F4C8971E27F6BF (question_id), INDEX IDX_9F4C8974BBC2705 (version_id), PRIMARY KEY(question_id, version_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE settings (_key VARCHAR(255) NOT NULL, value LONGTEXT NOT NULL, type VARCHAR(255) NOT NULL, PRIMARY KEY(_key)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE mailing (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, title VARCHAR(255) NOT NULL, message LONGTEXT NOT NULL, date DATE NOT NULL, filters LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:array)\', users LONGTEXT NOT NULL, forceSending TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE training_versions (id INT AUTO_INCREMENT NOT NULL, category_id INT DEFAULT NULL, start_date DATE NOT NULL, updated_at DATETIME NOT NULL, created_at DATETIME NOT NULL, INDEX IDX_FEB9534512469DE2 (category_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE slices_logs (id INT AUTO_INCREMENT NOT NULL, slice_id INT DEFAULT NULL, user_id INT DEFAULT NULL, started_at DATETIME NOT NULL, ended_at DATETIME DEFAULT NULL, questions LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', answers LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', passed TINYINT(1) NOT NULL, INDEX IDX_5688AC306F7A2797 (slice_id), INDEX IDX_5688AC30A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE flash_blocks_items (id INT AUTO_INCREMENT NOT NULL, block_id INT DEFAULT NULL, parent_id INT DEFAULT NULL, title VARCHAR(255) NOT NULL, subtitle VARCHAR(255) DEFAULT NULL, text LONGTEXT NOT NULL, category VARCHAR(255) DEFAULT NULL, position INT NOT NULL, lft INT NOT NULL, rgt INT NOT NULL, lvl INT NOT NULL, updated_at DATETIME NOT NULL, created_at DATETIME NOT NULL, INDEX IDX_28679D82E9ED820C (block_id), INDEX IDX_28679D82727ACA70 (parent_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE faq (id INT AUTO_INCREMENT NOT NULL, question LONGTEXT NOT NULL, answer LONGTEXT NOT NULL, position INT NOT NULL, status TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE offers_prices (at TINYINT(1) NOT NULL, category_id INT NOT NULL, region_id INT NOT NULL, offer_id INT NOT NULL, price INT NOT NULL, INDEX IDX_12293BCA12469DE2 (category_id), INDEX IDX_12293BCA98260155 (region_id), INDEX IDX_12293BCA53C674EE (offer_id), PRIMARY KEY(at, category_id, region_id, offer_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE notifies (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, title VARCHAR(255) NOT NULL, text LONGTEXT NOT NULL, readed TINYINT(1) NOT NULL, sended_at DATETIME NOT NULL, INDEX IDX_51E1EC13A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE feedback_teacher_emails (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE subjects (id INT AUTO_INCREMENT NOT NULL, title VARCHAR(255) NOT NULL, brief_description VARCHAR(255) DEFAULT NULL, description LONGTEXT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE training_versions_subjects (subject_id INT NOT NULL, version_id INT NOT NULL, INDEX IDX_503C1C0023EDC87 (subject_id), INDEX IDX_503C1C004BBC2705 (version_id), PRIMARY KEY(subject_id, version_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE articles (id INT AUTO_INCREMENT NOT NULL, title VARCHAR(255) NOT NULL, url VARCHAR(255) NOT NULL, keywords VARCHAR(255) DEFAULT NULL, description VARCHAR(255) DEFAULT NULL, text LONGTEXT NOT NULL, top_menu TINYINT(1) NOT NULL, bottom_menu TINYINT(1) NOT NULL, private TINYINT(1) NOT NULL, position INT NOT NULL, updated_at DATETIME NOT NULL, created_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_BFDD3168F47645AE (url), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE users_confirmation (id INT AUTO_INCREMENT NOT NULL, uid INT DEFAULT NULL, hash VARCHAR(40) NOT NULL, sms_code VARCHAR(255) DEFAULT NULL, phone VARCHAR(255) DEFAULT NULL, last_sent DATETIME NOT NULL, activated TINYINT(1) NOT NULL, UNIQUE INDEX UNIQ_1B793430D1B862B8 (hash), INDEX IDX_1B793430539B0606 (uid), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE categories (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, with_at TINYINT(1) NOT NULL, theory INT NOT NULL, practice INT NOT NULL, training NUMERIC(10, 1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE offices (id INT AUTO_INCREMENT NOT NULL, region_id INT DEFAULT NULL, title VARCHAR(255) NOT NULL, address VARCHAR(255) NOT NULL, station VARCHAR(255) DEFAULT NULL, address_desc LONGTEXT DEFAULT NULL, work_time VARCHAR(255) DEFAULT NULL, phones LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', emails LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', address_geo VARCHAR(255) DEFAULT NULL, map_code LONGTEXT DEFAULT NULL, active TINYINT(1) NOT NULL, position INT NOT NULL, updated_at DATETIME NOT NULL, created_at DATETIME NOT NULL, INDEX IDX_F574FF4C98260155 (region_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE webgroups (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE holidays (id INT AUTO_INCREMENT NOT NULL, entry_value DATE NOT NULL, exception TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE themes (id INT AUTO_INCREMENT NOT NULL, subject_id INT DEFAULT NULL, title VARCHAR(255) NOT NULL, text LONGTEXT DEFAULT NULL, position INT NOT NULL, INDEX IDX_154232DE23EDC87 (subject_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE themes_readers (theme_id INT NOT NULL, reader_id INT NOT NULL, INDEX IDX_861E0EB859027487 (theme_id), INDEX IDX_861E0EB81717D737 (reader_id), PRIMARY KEY(theme_id, reader_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE training_versions_themes (theme_id INT NOT NULL, version_id INT NOT NULL, INDEX IDX_B36FE2B59027487 (theme_id), INDEX IDX_B36FE2B4BBC2705 (version_id), PRIMARY KEY(theme_id, version_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE news (id INT AUTO_INCREMENT NOT NULL, title VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, text LONGTEXT NOT NULL, publish TINYINT(1) NOT NULL, created_at DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE reviews (id INT AUTO_INCREMENT NOT NULL, category_id INT DEFAULT NULL, user_id INT DEFAULT NULL, email VARCHAR(255) DEFAULT NULL, last_name VARCHAR(255) DEFAULT NULL, first_name VARCHAR(255) DEFAULT NULL, patronymic VARCHAR(255) DEFAULT NULL, sex ENUM(\'male\', \'female\') DEFAULT NULL COMMENT \'(DC2Type:enumsex)\', birthday DATE DEFAULT NULL, message LONGTEXT NOT NULL, moderated TINYINT(1) DEFAULT NULL, social VARCHAR(255) DEFAULT NULL, created_at DATETIME NOT NULL, INDEX IDX_6970EB0F12469DE2 (category_id), INDEX IDX_6970EB0FA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE services_prices (service_id INT NOT NULL, region_id INT NOT NULL, price INT NOT NULL, active TINYINT(1) NOT NULL, INDEX IDX_7CA5AF5FED5CA9E6 (service_id), INDEX IDX_7CA5AF5F98260155 (region_id), PRIMARY KEY(service_id, region_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE users (id INT AUTO_INCREMENT NOT NULL, required_notify_id INT DEFAULT NULL, category_id INT DEFAULT NULL, region_id INT DEFAULT NULL, region_place_id INT DEFAULT NULL, webgroup_id INT DEFAULT NULL, username VARCHAR(255) NOT NULL, username_canonical VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, email_canonical VARCHAR(255) NOT NULL, enabled TINYINT(1) NOT NULL, salt VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, last_login DATETIME DEFAULT NULL, locked TINYINT(1) NOT NULL, expired TINYINT(1) NOT NULL, expires_at DATETIME DEFAULT NULL, confirmation_token VARCHAR(255) DEFAULT NULL, password_requested_at DATETIME DEFAULT NULL, roles LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', credentials_expired TINYINT(1) NOT NULL, credentials_expire_at DATETIME DEFAULT NULL, certificate VARCHAR(255) DEFAULT NULL, last_name VARCHAR(255) NOT NULL, first_name VARCHAR(255) NOT NULL, patronymic VARCHAR(255) NOT NULL, photo VARCHAR(255) DEFAULT NULL, photo_coords LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:array)\', sex ENUM(\'male\', \'female\') DEFAULT NULL COMMENT \'(DC2Type:enumsex)\', birthday DATE DEFAULT NULL, birth_country VARCHAR(255) DEFAULT NULL, birth_region VARCHAR(255) DEFAULT NULL, birth_city VARCHAR(255) DEFAULT NULL, foreign_passport TINYINT(1) NOT NULL, foreign_passport_number VARCHAR(255) DEFAULT NULL, passport_number VARCHAR(255) DEFAULT NULL, passport_rovd VARCHAR(255) DEFAULT NULL, passport_rovd_number VARCHAR(255) DEFAULT NULL, passport_rovd_date DATE DEFAULT NULL, not_registration TINYINT(1) NOT NULL, registration_country VARCHAR(255) DEFAULT NULL, registration_region VARCHAR(255) DEFAULT NULL, registration_city VARCHAR(255) DEFAULT NULL, registration_street VARCHAR(255) DEFAULT NULL, registration_house VARCHAR(255) DEFAULT NULL, registration_stroenie VARCHAR(255) DEFAULT NULL, registration_korpus VARCHAR(255) DEFAULT NULL, registration_apartament VARCHAR(255) DEFAULT NULL, place_country VARCHAR(255) DEFAULT NULL, place_region VARCHAR(255) DEFAULT NULL, place_city VARCHAR(255) DEFAULT NULL, place_street VARCHAR(255) DEFAULT NULL, place_house VARCHAR(255) DEFAULT NULL, place_stroenie VARCHAR(255) DEFAULT NULL, place_korpus VARCHAR(255) DEFAULT NULL, place_apartament VARCHAR(255) DEFAULT NULL, work_place VARCHAR(255) DEFAULT NULL, work_position VARCHAR(255) DEFAULT NULL, phone_home VARCHAR(255) DEFAULT NULL, phone_mobile VARCHAR(255) DEFAULT NULL, phone_mobile_status ENUM(\'sended\', \'confirmed\') DEFAULT NULL COMMENT \'(DC2Type:enummobilestatus)\', phone_mobile_code VARCHAR(255) DEFAULT NULL, notifies_cnt INT NOT NULL, paid_notified_at DATE NOT NULL, payment_1_paid DATE DEFAULT NULL, payment_1_paid_not_notify TINYINT(1) NOT NULL, payment_2_paid DATE DEFAULT NULL, payment_2_paid_not_notify TINYINT(1) NOT NULL, payment_3_paid DATE DEFAULT NULL, payment_3_paid_not_notify TINYINT(1) NOT NULL, promo_used TINYINT(1) DEFAULT NULL, white_ips LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', moderated TINYINT(1) NOT NULL, paradox_id INT DEFAULT NULL, discount_2_notify_first TINYINT(1) NOT NULL, discount_2_notify_second TINYINT(1) NOT NULL, mailing TINYINT(1) NOT NULL, overdue_unsubscribed TINYINT(1) NOT NULL, offline TINYINT(1) NOT NULL, reg_info LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', popup_info LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', pass_info LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', close_final_exam TINYINT(1) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_1483A5E992FC23A8 (username_canonical), UNIQUE INDEX UNIQ_1483A5E9A0D96FBF (email_canonical), UNIQUE INDEX UNIQ_1483A5E9BB0A6438 (required_notify_id), INDEX IDX_1483A5E912469DE2 (category_id), INDEX IDX_1483A5E998260155 (region_id), INDEX IDX_1483A5E97E61A6EB (region_place_id), INDEX IDX_1483A5E962B396A4 (webgroup_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE users_support_categories (user_id INT NOT NULL, category_id INT NOT NULL, INDEX IDX_5B88C716A76ED395 (user_id), INDEX IDX_5B88C71612469DE2 (category_id), PRIMARY KEY(user_id, category_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE themes_tests_logs (id INT AUTO_INCREMENT NOT NULL, theme_id INT DEFAULT NULL, user_id INT DEFAULT NULL, started_at DATETIME NOT NULL, ended_at DATETIME DEFAULT NULL, questions LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', answers LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', passed TINYINT(1) NOT NULL, INDEX IDX_4041A00F59027487 (theme_id), INDEX IDX_4041A00FA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE how_work (id INT AUTO_INCREMENT NOT NULL, title VARCHAR(255) NOT NULL, _desc LONGTEXT NOT NULL, position INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE exams_logs (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, subject_id INT DEFAULT NULL, started_at DATETIME NOT NULL, ended_at DATETIME DEFAULT NULL, questions LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', answers LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', passed TINYINT(1) NOT NULL, INDEX IDX_8F2175BAA76ED395 (user_id), INDEX IDX_8F2175BA23EDC87 (subject_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE slices (id INT AUTO_INCREMENT NOT NULL, after_theme_id INT DEFAULT NULL, UNIQUE INDEX UNIQ_BD8F3614BC7E206 (after_theme_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE training_versions_slices (slice_id INT NOT NULL, version_id INT NOT NULL, INDEX IDX_A3FBFAE16F7A2797 (slice_id), INDEX IDX_A3FBFAE14BBC2705 (version_id), PRIMARY KEY(slice_id, version_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE tests_knowledge_logs (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, started_at DATETIME NOT NULL, ended_at DATETIME DEFAULT NULL, questions LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', answers LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', passed TINYINT(1) NOT NULL, INDEX IDX_8D104917A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE tests_logs (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, started_at DATETIME NOT NULL, ended_at DATETIME DEFAULT NULL, questions LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', answers LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', passed TINYINT(1) NOT NULL, INDEX IDX_D61AD501A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE payments_logs (id INT AUTO_INCREMENT NOT NULL, uid INT DEFAULT NULL, s_type ENUM(\'robokassa\', \'psb\') DEFAULT NULL COMMENT \'(DC2Type:enumpayment)\', s_id VARCHAR(255) DEFAULT NULL, sum INT NOT NULL, paid TINYINT(1) NOT NULL, comment LONGTEXT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_8A8D45B8539B0606 (uid), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE sms_uslugi_ru_logs (id INT AUTO_INCREMENT NOT NULL, text VARCHAR(255) NOT NULL, number VARCHAR(255) NOT NULL, s_id VARCHAR(255) DEFAULT NULL, s_answer LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', created_at DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE promo_campaigns (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, type VARCHAR(255) NOT NULL, payment_type VARCHAR(255) NOT NULL, used_from DATETIME NOT NULL, used_to DATETIME NOT NULL, active TINYINT(1) NOT NULL, discount INT NOT NULL, max_activations INT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE promo_key (id INT AUTO_INCREMENT NOT NULL, campaign_id INT DEFAULT NULL, _key VARCHAR(255) NOT NULL, activations_info LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', UNIQUE INDEX UNIQ_CC96ECCDC7FBB253 (_key), INDEX IDX_CC96ECCDF639F774 (campaign_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE support_categories ADD CONSTRAINT FK_1847824AA76ED395 FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL');
+        $this->addSql('ALTER TABLE support_categories ADD CONSTRAINT FK_1847824A727ACA70 FOREIGN KEY (parent_id) REFERENCES support_categories (id)');
+        $this->addSql('ALTER TABLE sites ADD CONSTRAINT FK_BC00AA6398260155 FOREIGN KEY (region_id) REFERENCES regions (id)');
+        $this->addSql('ALTER TABLE support_dialogs ADD CONSTRAINT FK_5C2A65B12469DE2 FOREIGN KEY (category_id) REFERENCES support_categories (id)');
+        $this->addSql('ALTER TABLE support_dialogs ADD CONSTRAINT FK_5C2A65BD959D900 FOREIGN KEY (last_moderator_id) REFERENCES users (id)');
+        $this->addSql('ALTER TABLE support_dialogs ADD CONSTRAINT FK_5C2A65BA76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');
+        $this->addSql('ALTER TABLE support_dialogs ADD CONSTRAINT FK_5C2A65B59027487 FOREIGN KEY (theme_id) REFERENCES themes (id)');
+        $this->addSql('ALTER TABLE final_exams_logs ADD CONSTRAINT FK_8CB1316FA76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');
+        $this->addSql('ALTER TABLE filials ADD CONSTRAINT FK_94C7FCC98260155 FOREIGN KEY (region_id) REFERENCES regions (id)');
+        $this->addSql('ALTER TABLE support_messages ADD CONSTRAINT FK_6FB495A95E46C4E2 FOREIGN KEY (dialog_id) REFERENCES support_dialogs (id)');
+        $this->addSql('ALTER TABLE support_messages ADD CONSTRAINT FK_6FB495A9A76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');
+        $this->addSql('ALTER TABLE regions_places ADD CONSTRAINT FK_B2578D4898260155 FOREIGN KEY (region_id) REFERENCES regions (id)');
+        $this->addSql('ALTER TABLE category_prices ADD CONSTRAINT FK_EB23A72212469DE2 FOREIGN KEY (category_id) REFERENCES categories (id)');
+        $this->addSql('ALTER TABLE category_prices ADD CONSTRAINT FK_EB23A72298260155 FOREIGN KEY (region_id) REFERENCES regions (id)');
+        $this->addSql('ALTER TABLE users_old_mobile_phones ADD CONSTRAINT FK_6EE221D7A76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');
+        $this->addSql('ALTER TABLE pass_filials ADD CONSTRAINT FK_2B38E3098260155 FOREIGN KEY (region_id) REFERENCES regions (id)');
+        $this->addSql('ALTER TABLE images ADD CONSTRAINT FK_E01FBE6A1E27F6BF FOREIGN KEY (question_id) REFERENCES questions (id)');
+        $this->addSql('ALTER TABLE images ADD CONSTRAINT FK_E01FBE6A12469DE2 FOREIGN KEY (category_id) REFERENCES categories (id)');
+        $this->addSql('ALTER TABLE images ADD CONSTRAINT FK_E01FBE6A23EDC87 FOREIGN KEY (subject_id) REFERENCES subjects (id)');
+        $this->addSql('ALTER TABLE images ADD CONSTRAINT FK_E01FBE6A53C674EE FOREIGN KEY (offer_id) REFERENCES offers (id)');
+        $this->addSql('ALTER TABLE images ADD CONSTRAINT FK_E01FBE6A299B2577 FOREIGN KEY (filial_id) REFERENCES filials (id)');
+        $this->addSql('ALTER TABLE images ADD CONSTRAINT FK_E01FBE6AF6BD1646 FOREIGN KEY (site_id) REFERENCES sites (id)');
+        $this->addSql('ALTER TABLE images ADD CONSTRAINT FK_E01FBE6A4E976491 FOREIGN KEY (flash_block_item_id) REFERENCES flash_blocks_items (id)');
+        $this->addSql('ALTER TABLE images ADD CONSTRAINT FK_E01FBE6A3E2E969B FOREIGN KEY (review_id) REFERENCES reviews (id)');
+        $this->addSql('ALTER TABLE images ADD CONSTRAINT FK_E01FBE6A5B2842B3 FOREIGN KEY (pass_filial_id) REFERENCES pass_filials (id)');
+        $this->addSql('ALTER TABLE images ADD CONSTRAINT FK_E01FBE6A9FE05ABF FOREIGN KEY (how_work_id) REFERENCES how_work (id)');
+        $this->addSql('ALTER TABLE questions ADD CONSTRAINT FK_8ADC54D559027487 FOREIGN KEY (theme_id) REFERENCES themes (id)');
+        $this->addSql('ALTER TABLE training_versions_questions ADD CONSTRAINT FK_9F4C8971E27F6BF FOREIGN KEY (question_id) REFERENCES questions (id)');
+        $this->addSql('ALTER TABLE training_versions_questions ADD CONSTRAINT FK_9F4C8974BBC2705 FOREIGN KEY (version_id) REFERENCES training_versions (id)');
+        $this->addSql('ALTER TABLE training_versions ADD CONSTRAINT FK_FEB9534512469DE2 FOREIGN KEY (category_id) REFERENCES categories (id)');
+        $this->addSql('ALTER TABLE slices_logs ADD CONSTRAINT FK_5688AC306F7A2797 FOREIGN KEY (slice_id) REFERENCES slices (id)');
+        $this->addSql('ALTER TABLE slices_logs ADD CONSTRAINT FK_5688AC30A76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');
+        $this->addSql('ALTER TABLE flash_blocks_items ADD CONSTRAINT FK_28679D82E9ED820C FOREIGN KEY (block_id) REFERENCES flash_blocks (id)');
+        $this->addSql('ALTER TABLE flash_blocks_items ADD CONSTRAINT FK_28679D82727ACA70 FOREIGN KEY (parent_id) REFERENCES flash_blocks_items (id)');
+        $this->addSql('ALTER TABLE offers_prices ADD CONSTRAINT FK_12293BCA12469DE2 FOREIGN KEY (category_id) REFERENCES categories (id)');
+        $this->addSql('ALTER TABLE offers_prices ADD CONSTRAINT FK_12293BCA98260155 FOREIGN KEY (region_id) REFERENCES regions (id)');
+        $this->addSql('ALTER TABLE offers_prices ADD CONSTRAINT FK_12293BCA53C674EE FOREIGN KEY (offer_id) REFERENCES offers (id)');
+        $this->addSql('ALTER TABLE notifies ADD CONSTRAINT FK_51E1EC13A76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');
+        $this->addSql('ALTER TABLE training_versions_subjects ADD CONSTRAINT FK_503C1C0023EDC87 FOREIGN KEY (subject_id) REFERENCES subjects (id)');
+        $this->addSql('ALTER TABLE training_versions_subjects ADD CONSTRAINT FK_503C1C004BBC2705 FOREIGN KEY (version_id) REFERENCES training_versions (id)');
+        $this->addSql('ALTER TABLE users_confirmation ADD CONSTRAINT FK_1B793430539B0606 FOREIGN KEY (uid) REFERENCES users (id)');
+        $this->addSql('ALTER TABLE offices ADD CONSTRAINT FK_F574FF4C98260155 FOREIGN KEY (region_id) REFERENCES regions (id)');
+        $this->addSql('ALTER TABLE themes ADD CONSTRAINT FK_154232DE23EDC87 FOREIGN KEY (subject_id) REFERENCES subjects (id)');
+        $this->addSql('ALTER TABLE themes_readers ADD CONSTRAINT FK_861E0EB859027487 FOREIGN KEY (theme_id) REFERENCES themes (id)');
+        $this->addSql('ALTER TABLE themes_readers ADD CONSTRAINT FK_861E0EB81717D737 FOREIGN KEY (reader_id) REFERENCES users (id)');
+        $this->addSql('ALTER TABLE training_versions_themes ADD CONSTRAINT FK_B36FE2B59027487 FOREIGN KEY (theme_id) REFERENCES themes (id)');
+        $this->addSql('ALTER TABLE training_versions_themes ADD CONSTRAINT FK_B36FE2B4BBC2705 FOREIGN KEY (version_id) REFERENCES training_versions (id)');
+        $this->addSql('ALTER TABLE reviews ADD CONSTRAINT FK_6970EB0F12469DE2 FOREIGN KEY (category_id) REFERENCES categories (id)');
+        $this->addSql('ALTER TABLE reviews ADD CONSTRAINT FK_6970EB0FA76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');
+        $this->addSql('ALTER TABLE services_prices ADD CONSTRAINT FK_7CA5AF5FED5CA9E6 FOREIGN KEY (service_id) REFERENCES services (id)');
+        $this->addSql('ALTER TABLE services_prices ADD CONSTRAINT FK_7CA5AF5F98260155 FOREIGN KEY (region_id) REFERENCES regions (id)');
+        $this->addSql('ALTER TABLE users ADD CONSTRAINT FK_1483A5E9BB0A6438 FOREIGN KEY (required_notify_id) REFERENCES notifies (id)');
+        $this->addSql('ALTER TABLE users ADD CONSTRAINT FK_1483A5E912469DE2 FOREIGN KEY (category_id) REFERENCES categories (id)');
+        $this->addSql('ALTER TABLE users ADD CONSTRAINT FK_1483A5E998260155 FOREIGN KEY (region_id) REFERENCES regions (id)');
+        $this->addSql('ALTER TABLE users ADD CONSTRAINT FK_1483A5E97E61A6EB FOREIGN KEY (region_place_id) REFERENCES regions_places (id)');
+        $this->addSql('ALTER TABLE users ADD CONSTRAINT FK_1483A5E962B396A4 FOREIGN KEY (webgroup_id) REFERENCES webgroups (id)');
+        $this->addSql('ALTER TABLE users_support_categories ADD CONSTRAINT FK_5B88C716A76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');
+        $this->addSql('ALTER TABLE users_support_categories ADD CONSTRAINT FK_5B88C71612469DE2 FOREIGN KEY (category_id) REFERENCES support_categories (id)');
+        $this->addSql('ALTER TABLE themes_tests_logs ADD CONSTRAINT FK_4041A00F59027487 FOREIGN KEY (theme_id) REFERENCES themes (id)');
+        $this->addSql('ALTER TABLE themes_tests_logs ADD CONSTRAINT FK_4041A00FA76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');
+        $this->addSql('ALTER TABLE exams_logs ADD CONSTRAINT FK_8F2175BAA76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');
+        $this->addSql('ALTER TABLE exams_logs ADD CONSTRAINT FK_8F2175BA23EDC87 FOREIGN KEY (subject_id) REFERENCES subjects (id)');
+        $this->addSql('ALTER TABLE slices ADD CONSTRAINT FK_BD8F3614BC7E206 FOREIGN KEY (after_theme_id) REFERENCES themes (id)');
+        $this->addSql('ALTER TABLE training_versions_slices ADD CONSTRAINT FK_A3FBFAE16F7A2797 FOREIGN KEY (slice_id) REFERENCES slices (id)');
+        $this->addSql('ALTER TABLE training_versions_slices ADD CONSTRAINT FK_A3FBFAE14BBC2705 FOREIGN KEY (version_id) REFERENCES training_versions (id)');
+        $this->addSql('ALTER TABLE tests_knowledge_logs ADD CONSTRAINT FK_8D104917A76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');
+        $this->addSql('ALTER TABLE tests_logs ADD CONSTRAINT FK_D61AD501A76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');
+        $this->addSql('ALTER TABLE payments_logs ADD CONSTRAINT FK_8A8D45B8539B0606 FOREIGN KEY (uid) REFERENCES users (id)');
+        $this->addSql('ALTER TABLE promo_key ADD CONSTRAINT FK_CC96ECCDF639F774 FOREIGN KEY (campaign_id) REFERENCES promo_campaigns (id)');
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    public function down(Schema $schema)
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+
+        $this->addSql('ALTER TABLE support_categories DROP FOREIGN KEY FK_1847824A727ACA70');
+        $this->addSql('ALTER TABLE support_dialogs DROP FOREIGN KEY FK_5C2A65B12469DE2');
+        $this->addSql('ALTER TABLE users_support_categories DROP FOREIGN KEY FK_5B88C71612469DE2');
+        $this->addSql('ALTER TABLE images DROP FOREIGN KEY FK_E01FBE6AF6BD1646');
+        $this->addSql('ALTER TABLE support_messages DROP FOREIGN KEY FK_6FB495A95E46C4E2');
+        $this->addSql('ALTER TABLE services_prices DROP FOREIGN KEY FK_7CA5AF5FED5CA9E6');
+        $this->addSql('ALTER TABLE flash_blocks_items DROP FOREIGN KEY FK_28679D82E9ED820C');
+        $this->addSql('ALTER TABLE images DROP FOREIGN KEY FK_E01FBE6A299B2577');
+        $this->addSql('ALTER TABLE images DROP FOREIGN KEY FK_E01FBE6A53C674EE');
+        $this->addSql('ALTER TABLE offers_prices DROP FOREIGN KEY FK_12293BCA53C674EE');
+        $this->addSql('ALTER TABLE users DROP FOREIGN KEY FK_1483A5E97E61A6EB');
+        $this->addSql('ALTER TABLE sites DROP FOREIGN KEY FK_BC00AA6398260155');
+        $this->addSql('ALTER TABLE filials DROP FOREIGN KEY FK_94C7FCC98260155');
+        $this->addSql('ALTER TABLE regions_places DROP FOREIGN KEY FK_B2578D4898260155');
+        $this->addSql('ALTER TABLE category_prices DROP FOREIGN KEY FK_EB23A72298260155');
+        $this->addSql('ALTER TABLE pass_filials DROP FOREIGN KEY FK_2B38E3098260155');
+        $this->addSql('ALTER TABLE offers_prices DROP FOREIGN KEY FK_12293BCA98260155');
+        $this->addSql('ALTER TABLE offices DROP FOREIGN KEY FK_F574FF4C98260155');
+        $this->addSql('ALTER TABLE services_prices DROP FOREIGN KEY FK_7CA5AF5F98260155');
+        $this->addSql('ALTER TABLE users DROP FOREIGN KEY FK_1483A5E998260155');
+        $this->addSql('ALTER TABLE images DROP FOREIGN KEY FK_E01FBE6A5B2842B3');
+        $this->addSql('ALTER TABLE images DROP FOREIGN KEY FK_E01FBE6A1E27F6BF');
+        $this->addSql('ALTER TABLE training_versions_questions DROP FOREIGN KEY FK_9F4C8971E27F6BF');
+        $this->addSql('ALTER TABLE training_versions_questions DROP FOREIGN KEY FK_9F4C8974BBC2705');
+        $this->addSql('ALTER TABLE training_versions_subjects DROP FOREIGN KEY FK_503C1C004BBC2705');
+        $this->addSql('ALTER TABLE training_versions_themes DROP FOREIGN KEY FK_B36FE2B4BBC2705');
+        $this->addSql('ALTER TABLE training_versions_slices DROP FOREIGN KEY FK_A3FBFAE14BBC2705');
+        $this->addSql('ALTER TABLE images DROP FOREIGN KEY FK_E01FBE6A4E976491');
+        $this->addSql('ALTER TABLE flash_blocks_items DROP FOREIGN KEY FK_28679D82727ACA70');
+        $this->addSql('ALTER TABLE users DROP FOREIGN KEY FK_1483A5E9BB0A6438');
+        $this->addSql('ALTER TABLE images DROP FOREIGN KEY FK_E01FBE6A23EDC87');
+        $this->addSql('ALTER TABLE training_versions_subjects DROP FOREIGN KEY FK_503C1C0023EDC87');
+        $this->addSql('ALTER TABLE themes DROP FOREIGN KEY FK_154232DE23EDC87');
+        $this->addSql('ALTER TABLE exams_logs DROP FOREIGN KEY FK_8F2175BA23EDC87');
+        $this->addSql('ALTER TABLE category_prices DROP FOREIGN KEY FK_EB23A72212469DE2');
+        $this->addSql('ALTER TABLE images DROP FOREIGN KEY FK_E01FBE6A12469DE2');
+        $this->addSql('ALTER TABLE training_versions DROP FOREIGN KEY FK_FEB9534512469DE2');
+        $this->addSql('ALTER TABLE offers_prices DROP FOREIGN KEY FK_12293BCA12469DE2');
+        $this->addSql('ALTER TABLE reviews DROP FOREIGN KEY FK_6970EB0F12469DE2');
+        $this->addSql('ALTER TABLE users DROP FOREIGN KEY FK_1483A5E912469DE2');
+        $this->addSql('ALTER TABLE users DROP FOREIGN KEY FK_1483A5E962B396A4');
+        $this->addSql('ALTER TABLE support_dialogs DROP FOREIGN KEY FK_5C2A65B59027487');
+        $this->addSql('ALTER TABLE questions DROP FOREIGN KEY FK_8ADC54D559027487');
+        $this->addSql('ALTER TABLE themes_readers DROP FOREIGN KEY FK_861E0EB859027487');
+        $this->addSql('ALTER TABLE training_versions_themes DROP FOREIGN KEY FK_B36FE2B59027487');
+        $this->addSql('ALTER TABLE themes_tests_logs DROP FOREIGN KEY FK_4041A00F59027487');
+        $this->addSql('ALTER TABLE slices DROP FOREIGN KEY FK_BD8F3614BC7E206');
+        $this->addSql('ALTER TABLE images DROP FOREIGN KEY FK_E01FBE6A3E2E969B');
+        $this->addSql('ALTER TABLE support_categories DROP FOREIGN KEY FK_1847824AA76ED395');
+        $this->addSql('ALTER TABLE support_dialogs DROP FOREIGN KEY FK_5C2A65BD959D900');
+        $this->addSql('ALTER TABLE support_dialogs DROP FOREIGN KEY FK_5C2A65BA76ED395');
+        $this->addSql('ALTER TABLE final_exams_logs DROP FOREIGN KEY FK_8CB1316FA76ED395');
+        $this->addSql('ALTER TABLE support_messages DROP FOREIGN KEY FK_6FB495A9A76ED395');
+        $this->addSql('ALTER TABLE users_old_mobile_phones DROP FOREIGN KEY FK_6EE221D7A76ED395');
+        $this->addSql('ALTER TABLE slices_logs DROP FOREIGN KEY FK_5688AC30A76ED395');
+        $this->addSql('ALTER TABLE notifies DROP FOREIGN KEY FK_51E1EC13A76ED395');
+        $this->addSql('ALTER TABLE users_confirmation DROP FOREIGN KEY FK_1B793430539B0606');
+        $this->addSql('ALTER TABLE themes_readers DROP FOREIGN KEY FK_861E0EB81717D737');
+        $this->addSql('ALTER TABLE reviews DROP FOREIGN KEY FK_6970EB0FA76ED395');
+        $this->addSql('ALTER TABLE users_support_categories DROP FOREIGN KEY FK_5B88C716A76ED395');
+        $this->addSql('ALTER TABLE themes_tests_logs DROP FOREIGN KEY FK_4041A00FA76ED395');
+        $this->addSql('ALTER TABLE exams_logs DROP FOREIGN KEY FK_8F2175BAA76ED395');
+        $this->addSql('ALTER TABLE tests_knowledge_logs DROP FOREIGN KEY FK_8D104917A76ED395');
+        $this->addSql('ALTER TABLE tests_logs DROP FOREIGN KEY FK_D61AD501A76ED395');
+        $this->addSql('ALTER TABLE payments_logs DROP FOREIGN KEY FK_8A8D45B8539B0606');
+        $this->addSql('ALTER TABLE images DROP FOREIGN KEY FK_E01FBE6A9FE05ABF');
+        $this->addSql('ALTER TABLE slices_logs DROP FOREIGN KEY FK_5688AC306F7A2797');
+        $this->addSql('ALTER TABLE training_versions_slices DROP FOREIGN KEY FK_A3FBFAE16F7A2797');
+        $this->addSql('ALTER TABLE promo_key DROP FOREIGN KEY FK_CC96ECCDF639F774');
+        $this->addSql('DROP TABLE support_categories');
+        $this->addSql('DROP TABLE sites');
+        $this->addSql('DROP TABLE support_dialogs');
+        $this->addSql('DROP TABLE services');
+        $this->addSql('DROP TABLE final_exams_logs');
+        $this->addSql('DROP TABLE flash_blocks');
+        $this->addSql('DROP TABLE test_emails');
+        $this->addSql('DROP TABLE filials');
+        $this->addSql('DROP TABLE offers');
+        $this->addSql('DROP TABLE support_messages');
+        $this->addSql('DROP TABLE regions_places');
+        $this->addSql('DROP TABLE category_prices');
+        $this->addSql('DROP TABLE feedback_emails');
+        $this->addSql('DROP TABLE users_old_mobile_phones');
+        $this->addSql('DROP TABLE regions');
+        $this->addSql('DROP TABLE pass_filials');
+        $this->addSql('DROP TABLE images');
+        $this->addSql('DROP TABLE questions');
+        $this->addSql('DROP TABLE training_versions_questions');
+        $this->addSql('DROP TABLE settings');
+        $this->addSql('DROP TABLE mailing');
+        $this->addSql('DROP TABLE training_versions');
+        $this->addSql('DROP TABLE slices_logs');
+        $this->addSql('DROP TABLE flash_blocks_items');
+        $this->addSql('DROP TABLE faq');
+        $this->addSql('DROP TABLE offers_prices');
+        $this->addSql('DROP TABLE notifies');
+        $this->addSql('DROP TABLE feedback_teacher_emails');
+        $this->addSql('DROP TABLE subjects');
+        $this->addSql('DROP TABLE training_versions_subjects');
+        $this->addSql('DROP TABLE articles');
+        $this->addSql('DROP TABLE users_confirmation');
+        $this->addSql('DROP TABLE categories');
+        $this->addSql('DROP TABLE offices');
+        $this->addSql('DROP TABLE webgroups');
+        $this->addSql('DROP TABLE holidays');
+        $this->addSql('DROP TABLE themes');
+        $this->addSql('DROP TABLE themes_readers');
+        $this->addSql('DROP TABLE training_versions_themes');
+        $this->addSql('DROP TABLE news');
+        $this->addSql('DROP TABLE reviews');
+        $this->addSql('DROP TABLE services_prices');
+        $this->addSql('DROP TABLE users');
+        $this->addSql('DROP TABLE users_support_categories');
+        $this->addSql('DROP TABLE themes_tests_logs');
+        $this->addSql('DROP TABLE how_work');
+        $this->addSql('DROP TABLE exams_logs');
+        $this->addSql('DROP TABLE slices');
+        $this->addSql('DROP TABLE training_versions_slices');
+        $this->addSql('DROP TABLE tests_knowledge_logs');
+        $this->addSql('DROP TABLE tests_logs');
+        $this->addSql('DROP TABLE payments_logs');
+        $this->addSql('DROP TABLE sms_uslugi_ru_logs');
+        $this->addSql('DROP TABLE promo_campaigns');
+        $this->addSql('DROP TABLE promo_key');
+    }
+}

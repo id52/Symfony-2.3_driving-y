@@ -1,0 +1,37 @@
+{% extends 'AppBundle::layout_new.html.twig' %}
+
+{% block title %}{{ article.title }} | {{ 'project.name'|trans }}{% endblock title %}
+{% block meta_keywords %}{{ article.keywords }}{% endblock meta_keywords %}
+{% block meta_description %}{{ article.description }}{% endblock meta_description %}
+
+{% block css %}
+{% if settings['article_styles'] is defined %}
+<style type="text/css">
+    {{ settings['article_styles']|raw }}
+</style>
+{% endif %}
+{% endblock css %}
+
+{% block content %}
+    <nav class="path">
+        <a href="{{ path('homepage') }}">{{ 'titles.homepage'|trans }}</a>
+        » <strong>{{ article.title }}</strong>
+    </nav>
+
+    <div class="mainContent">
+        <div class="title">
+            <h1>{{ article.title }}</h1>
+        </div>
+        <div class="text-block">
+            {{ article.text|replace({'{{ phone1 }}': ('+7 ('~settings['contacts_phone1_prefix']~') '~settings['contacts_phone1'])})|replace({'{{ phone2 }}': ('+7 ('~settings['contacts_phone2_prefix']~') '~settings['contacts_phone2'])})|raw }}
+        </div>
+    </div>
+{% endblock content %}
+
+{% block js %}
+<script>
+$(function() {
+    $('.fancybox').fancybox();
+});
+</script>
+{% endblock js %}

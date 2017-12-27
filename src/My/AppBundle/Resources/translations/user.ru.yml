@@ -1,0 +1,61 @@
+user_id: '#'
+user_email: E-mail
+user_name: Ф. И. О.
+user_category: Пакет
+user_u_roles: Права
+user_with_roles: С правами?
+user_u_white_ips: Разрешённые IP
+user_u_white_ips_help: Каждый IP с новой строки
+user_created_at: Дата регистрации
+user_birthday: День рождения
+user_region: Регион
+user_paradox_id: Paradox ID
+user_webgroup: Веб-группа
+user_all: Увидеть всех
+user_type_paids: Тип оплаты
+user_paid: Оплата
+user_paids: Оплаты
+user_additional_paids: Оплаты дополнительных услуг
+user_phone_home: Домашний телефон
+user_phone_mobile: Мобильный телефон
+user_passport_number: Номер паспорта
+user_last_name: Фамилия
+user_first_name: Имя
+user_patronymic: Отчество
+user_phone_mobile_confirmed: Мобильный телефон подтверждён?
+user_show_from: Показывать от
+user_show_to: Показывать до
+user_exams: Сдал экзамены?
+user_final_exam: Сдал итоговый экзамен?
+user_in_paradox: В парадоксе?
+user_status: Статус
+user_mailing: Подписан на рассылки?
+user_mailing_c: Рассылка
+user_moderated_support_categories: Категории поддержки для модерирования
+
+ROLE_ADMIN: Админ
+ROLE_MOD_CONTENT: Редактирование данных
+ROLE_MOD_PRECHECK_USERS: Проверка пользователей
+ROLE_MOD_PARADOX_USERS: Перенос в Paradox
+ROLE_MOD_ADD_USER: Добавление пользователей
+ROLE_MOD_SUPPORT: Система поддержки
+ROLE_MOD_TEACHER: Преподаватель (система поддержки)
+ROLE_MOD_FINANCE: Финансовый аналитик
+ROLE_MOD_PROMO: Промо-кампании
+ROLE_MOD_MAILING: Управление рассылками
+ROLE_MOD_ACCOUNTANT: Кассир
+
+choose_option:  - Выберите -
+yes: да
+no: нет
+
+paids:
+    office: Оплата в офисе (добавить быстро, добавить)
+    online: Оплата онлайн (через сайт)
+    no_paid: Без оплат
+    onetime_offline: Полная оплата в офисе
+    paid_1_office: Оплата в офисе 1
+    paid_2_office: Оплата в офисе 2
+    onetime_online: Полная оплата онлайн
+    paid_1_online: Оплата онлайн 1
+    paid_2_online: Оплата онлайн 2

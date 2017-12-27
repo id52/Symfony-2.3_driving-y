@@ -1,0 +1,3 @@
+region_name: Название
+region_categories_prices: Цены пакетов в регионе
+region_empty_categories: Внимание, создан новый Регион, добавьте "Пакет" в этом регионе!

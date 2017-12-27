@@ -1,0 +1,145 @@
+{% extends 'AppBundle::layout_m.html.twig' %}
+
+{% block css %}
+<link rel="stylesheet" href="/yp/css/payment_page.css"/>
+{% endblock css %}
+
+{% block content %}
+<div class="b_page_payment_title">
+    <div class="b_plan_category">
+        <div class="b_plan_category--title">Пакет</div>
+        <div class="b_plan_category--name">{{ app.user.category }}</div>
+    </div>
+</div>
+
+    <div class="b_page_payment_info{{ app.user.regInfo['is_onetime'] ? ' b_page_payment_info_4' : '' }}">
+    <ul>
+        <li>
+            <div class="b_page_payment_info--img">
+                <img class="" src="/yp/img/icon_6.png" alt="">
+            </div>
+            <div class="b_page_payment_info--title">Теория</div>
+            <div class="b_page_payment_info--info">{{ app.user.category.theory }} часов</div>
+        </li>
+        <li>
+            <div class="b_page_payment_info--img">
+                <img class="" src="/yp/img/icon_5.png" alt="">
+            </div>
+            <div class="b_page_payment_info--title">Вождение</div>
+            <div class="b_page_payment_info--info">{{ app.user.category.practice }} часов</div>
+        </li>
+        <li>
+            <div class="b_page_payment_info--img">
+                <img class="" src="/yp/img/icon_4.png" alt="">
+            </div>
+            <div class="b_page_payment_info--title">Срок обучения</div>
+            {% set month = app.user.category.training %}
+            <div class="b_page_payment_info--info">
+                {% set month = app.user.category.training %}
+                {{ month - month|round ? month : month|round }} месяца
+            </div>
+        </li>
+        <li>
+            <div class="b_page_payment_info--img">
+                <img class="" src="/yp/img/icon_3.png" alt="">
+            </div>
+            <div class="b_page_payment_info--title">Стоимость обучения</div>
+            <div class="b_page_payment_info--info">
+                {% if sum_base != sum_all %}
+                    <span>{{ sum_base|number_format(0, ',', ' ') }} руб.</span>
+                {% endif %}
+                {{ sum_all|number_format(0, ',', ' ') }} руб.
+            </div>
+        </li>
+        {% if not app.user.regInfo['is_onetime'] %}
+            <li>
+                <div class="b_page_payment_info--img">
+                    <img class="" src="/yp/img/icon_7.png" alt="">
+                </div>
+                <div class="b_page_payment_info--title">Первоначальный взнос</div>
+                <div class="b_page_payment_info--info">{{ sum_1|number_format(0, ',', ' ') }} руб.</div>
+            </li>
+        {% endif %}
+    </ul>
+</div>
+
+<div class="b_page_payment_info_attention m_margin">{{ text|raw }}</div>
+
+
+<div class="pay">
+    <div class="hold">
+        <h3>Пакет: {{ app.user.category }}</h3>
+        <div class="sum">
+            <div class="price">{{ app.user.regInfo['is_onetime'] ? 'Стоимость обучения' : 'Первый взнос' }}: <strong>Цена: {{ sum|number_format(0, ',', ' ') }} руб.</strong></div>
+            <div class="code">
+                <div class="input">
+                    <input id="promo_input" value="" placeholder="Промокод" type="text">
+                    <span class="submit"><input id="promo_btn" value="Применить" type="button"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form method="post" action="">
+        <div class="total">
+            <input id="promo_key" name="promo_key" type="hidden" value="">
+            Итого: <span id="total_sum">{{ sum|number_format(0, ',', ' ') }}</span> руб.
+            <span class="go">Оплатить <input value="" type="submit"></span>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+<script>
+$(function() {
+    var initial_sum = {{ sum }};
+    $('#promo_btn').click(function(e) {
+        e.preventDefault();
+        var key = $('#promo_input').val();
+        if (key) {
+            var $this = $(this);
+            $this.attr('disabled', 'disabled');
+            $.getJSON('{{ path('promo_check_ajax') }}', { key: key, type: 'first' }, function(data) {
+                if (data['discount']) {
+                    var sum = Math.max(initial_sum - data['discount'], 0);
+                    if (sum > 1000) {
+                        sum = sum.toString();
+                        sum = sum.slice(0, -3) + ' ' + sum.slice(-3);
+                    }
+                    $('#total_sum').text(sum);
+                    $('#promo_key').val(key);
+                    var block = $('#promo_btn').closest('.code');
+                    block.addClass('success');
+                    var discount = data['discount'];
+                    if (discount > 1000) {
+                        discount = discount.toString();
+                        discount = discount.slice(0, -3) + ' ' + discount.slice(-3);
+                    }
+                    block.html('К общей сумме была применена скидка: <strong>'+discount+' руб.</strong>');
+                } else {
+                    var m_modal = $('#m_modal');
+                    var m_modal_overlay = $('#m_modal_overlay');
+                    $('.m_modal_title', m_modal).hide();
+                    $('.m_modal_content', m_modal).html('Такой промокод не найден или уже был использован.' + '<br><button class="e_btn e_btn_red" style="display:block;margin:20px auto 0">Закрыть</button>');
+                    $('.e_btn', m_modal).click(function(e) {
+                        e.preventDefault();
+                        m_modal.hide();
+                        m_modal_overlay.hide();
+                    });
+                    m_modal_overlay.show();
+                    m_modal.css('top', (($(window).height() < m_modal.height() ? 60 : ($(window).height() / 2 - m_modal.height() / 2)) + $(window).scrollTop()) + 'px');
+                    m_modal.show();
+                }
+                $this.removeAttr('disabled');
+            });
+        }
+    });
+
+    $('#access_access').closest('form').on('submit', function() {
+//        yaCounter25512893.reachGoal('PAY');
+    });
+});
+</script>
+{% endblock js %}

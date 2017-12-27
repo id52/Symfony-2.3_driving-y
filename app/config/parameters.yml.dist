@@ -1,0 +1,50 @@
+parameters:
+    database_driver:   pdo_mysql
+    database_host:     127.0.0.1
+    database_port:     ~
+    database_name:     ya_prava
+    database_user:     ya_prava
+    database_password: ya_prava
+
+    mailer_transport:  smtp
+    mailer_host:       127.0.0.1
+    mailer_user:       ~
+    mailer_password:   ~
+    mailer_encryption: ~
+    mailer_auth_mode:  ~
+    mailer_port:       ~
+
+    locale:            ru
+    secret:            0e6976310f2c29309cc2d88ca5c74ce5a6ba2f0d
+
+    sender_email:      admin@ya-prava.loc
+    sender_name:       Автошкола
+
+    dev_email:         tigerman@yandex.ru
+    cache_key:         4f777e4743fe4671f220cbf6a126c4b4
+    host:              ya-prava.loc
+
+    # dev (default), qa, prod
+    server_type: dev
+    is_test:     true
+
+    remember_me.name:     REMEMBERME
+    remember_me.lifetime: 31536000
+    remember_me.path:     /
+    remember_me.domain:   ~
+
+    robokassa_login:   login
+    robokassa_pass1:   pass1
+    robokassa_pass2:   pass2
+    robokassa_url:     https://auth.robokassa.ru/Merchant/Index.aspx
+
+    sms_uslugi_login:  login
+    sms_uslugi_pass:   pass
+    sms_uslugi_url:    https://lcab.sms-uslugi.ru/API/XML/send.php
+
+    psb_key: key
+    psb_terminal_id: terminal_id
+    psb_merchant_id: merchant_id
+    psb_merchant_name: merchant_name
+    psb_merchant_email: merchant_email
+    psb_url: https://3ds.payment.ru/cgi-bin/cgi_link

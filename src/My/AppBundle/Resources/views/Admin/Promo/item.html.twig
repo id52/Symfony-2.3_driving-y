@@ -1,0 +1,23 @@
+{% extends 'AppBundle:Admin:_item.html.twig' %}
+
+{% block js %}
+<script>
+$(function() {
+    var promo_type_change = function() {
+        var type = $('#promo_type').val();
+        if (type == 'keys') {
+            $('#promo_max_activations').val('').closest('.control-group').hide();
+            $('#promo_keys').closest('.control-group').show();
+        } else if (type == 'users') {
+            $('#promo_keys').val('').closest('.control-group').hide();
+            $('#promo_max_activations').closest('.control-group').show();
+        } else {
+            $('#promo_keys').val('').closest('.control-group').hide();
+            $('#promo_max_activations').val('').closest('.control-group').hide();
+        }
+    };
+    $('#promo_type').change(promo_type_change);
+    promo_type_change();
+});
+</script>
+{% endblock js %}

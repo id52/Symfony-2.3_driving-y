@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{{ 'project.name'|trans }} — {{ 'project.slogan'|trans }}{% endblock %}</title>
+    <meta name="keywords" content="{% block meta_keywords '' %}"/>
+    <meta name="description" content="{% block meta_description '' %}"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/yp/css/main.css"/>
+    <link rel="stylesheet" href="/yp/css/m_modal.css"/>
+    {% block css '' %}
+</head>
+<body class="{% block extra_body_class '' %}">
+
+{% include 'AppBundle::_server_label.html.twig' %}
+
+{% block start_content '' %}
+
+<div id="m_modal_overlay"></div>
+<div id="m_modal" class="m_modal">
+    <div class="m_modal_title">
+        <a href="#" class="m_modal_close"><img src="/m/images/icon/close.png" alt=""></a>
+        <span></span>
+    </div>
+    <div class="m_modal_content"></div>
+</div>
+
+<div class="b_page">
+    <div class="wrapper_page_content">
+        <div class="b_header">
+            <div class="b_inner">
+                <a href="http://ya-prava.ru/" class="e_logo_header">
+                    <img src="/yp/img/logo_header.png" alt="">
+                </a>
+                <div class="b_header_butons">
+                    <div class="b_header_info">
+                        {% if app.user %}
+                            <a href="{{ path('homepage') }}" class="e_header_name">
+                                {{ app.user.lastName~' '~app.user.firstName|slice(0,1)~'.' }}</a>
+                        {% endif %}
+                        <span class="e_header--phone">
+                            <a href="tel:+7{{ settings['contacts_phone1_prefix'] }}{{ settings['contacts_phone1']|replace({ '-': '' }) }}" class="ya-phone">
+                                +7 ({{ settings['contacts_phone1_prefix'] }}){{ settings['contacts_phone1'] }}
+                            </a>
+                        </span>
+                    </div>
+                    <div>
+                        {% if app.user %}
+                            {% if is_granted('ROLE_MOD') %}
+                                <a href="{{ path('admin') }}" class="e_btn e_btn_turquoise">В админку</a>
+                            {% endif %}
+                            <a href="{{ path('fos_user_security_logout') }}" class="e_btn e_btn_red ">Выход</a>
+                        {% else %}
+                            <a href="{{ path('fos_user_security_login') }}"
+                               class="e_btn e_btn_turquoise">Вход</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="b_wrapper {% block extra_wrapper_class '' %}">
+            <div class="b_container">
+                {% block content '' %}
+            </div>
+        </div>
+    </div>
+
+    <footer class="b_footer">
+        <div class="b_inner">
+            <div class="footer--content">
+                <div class="footer--item">
+                    <img alt="" src="/yp/img/diamond_footer.png">
+                </div>
+                <div class="footer--item">
+                    ЯПрава.ру &copy; <span>Все права защищены.</span>
+                    <span class="e_footer_phone">
+                        <a href="tel:+7{{ settings['contacts_phone1_prefix'] }}{{ settings['contacts_phone1']|replace({ '-': '' }) }}" class="ya-phone">
+                            +7 ({{ settings['contacts_phone1_prefix'] }}){{ settings['contacts_phone1'] }}
+                        </a>
+                    </span>
+                    <a href="mailto:info@ya-prava.ru" class="e_footer_email">info@ya-prava.ru</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+<script type="text/javascript" src="/yp/js/jquery.js"></script>
+
+{% block js '' %}
+
+{% if settings['counters_yandex'] is defined %}
+    <script>{{ settings['counters_yandex']|raw }}</script>
+{% endif %}
+
+</body>
+</html>

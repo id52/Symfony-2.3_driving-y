@@ -1,0 +1,32 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{% block form_widget_compound -%}
+    {%- if form.parent is empty -%}
+        {{ form_errors(form) }}
+    {%- endif -%}
+    {{- block('form_rows') -}}
+    {{- form_rest(form) -}}
+{%- endblock form_widget_compound %}
+
+{% block form_label -%}
+    {% set label = (label ? label : id)|trans %}
+    {{ parent() }}
+{%- endblock form_label %}
+
+{% block form_errors -%}
+{% if form.parent and errors|length > 0 %}
+    <label for="{{ id }}" class="error">
+        {% for error in errors %}
+            {{ error.message }}<br />
+        {% endfor %}
+    </label>
+{% endif %}
+{%- endblock form_errors %}
+
+{% block form_row -%}
+<div class="e_form_group">
+    {{- form_label(form) -}}
+    {{- form_widget(form) -}}
+    {{- form_errors(form) -}}
+</div>
+{%- endblock form_row %}

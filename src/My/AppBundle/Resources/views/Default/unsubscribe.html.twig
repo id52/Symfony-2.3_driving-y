@@ -1,0 +1,10 @@
+{% extends 'AppBundle::layout_m_clear.html.twig' %}
+
+{% block extra_body_class %}footer-up{% endblock extra_body_class %}
+{% block extra_wrapper_class %}m_bg_diamond{% endblock extra_wrapper_class %}
+
+{% block content %}
+<div class="b_text_info b_text_info_clear">
+    {{ 'unsubscribe'|trans({ '%email%': email }) }}
+</div>
+{% endblock content %}

@@ -1,0 +1,49 @@
+{% extends 'AppBundle::layout_new.html.twig' %}
+
+{% block start_content %}
+    <link href="/yp/css/payment_page.css" rel="stylesheet" type="text/css">
+{% endblock start_content %}
+
+{% block content %}
+    <nav class="path">
+        <a href="{{ path('homepage') }}">{{ 'titles.homepage'|trans }}</a>
+        » <strong>{{ 'titles.webinars'|trans }}</strong>
+    </nav>
+
+    <div class="mainContent">
+        <section class="b_info_section">
+            <div class="b_info_section--title">
+                <h1>Вебинары</h1>
+            </div>
+            <div class="b_info_section--text">
+                <p>
+                    Автошкола «ЯПрава» совместно с Союзом автошкол Москвы и автошколой при МГТУ им. Баумана
+                    предоставляет своим ученицам возможность изучать теоретические дисциплины с помощью портала
+                    дистанционного обучения, который разработан с учётом всех требований по подготовке к экзаменам в
+                    ГИБДД и постоянно обновляется в соответствии с последними поправками в Правилах Дорожного Движения.
+                </p>
+                <h2>
+                    Вам доступны:
+                </h2>
+                <div class="b_section_text_icon">
+                    <div>
+                        <img src="/v2/img/img_1.png" alt="">
+                    </div>
+                    <div>
+                        <span>Вебинары - виртуальные уроки,</span> полностью аналогичные занятиям в классе,
+                        в режиме реального времени. Преподаватель в процессе теоретических занятий
+                        объяснит Вам все основы правил дорожного движения, научит ориентироваться и
+                        принимать правильные решения в сложных дорожных ситуациях, а также ответит
+                        на все интересующие Вас вопросы. Вебинары доступны и в записи.
+                    </div>
+                </div>
+
+            </div>
+            <div class="b_page_payment_button">
+                <a id="webinar_button" class="webinar_button e_btn_apply_gr m_width" href="http://webinar.drivemaster.ru/">
+                    <span>Перейти на портал вебинаров</span>
+                </a>
+            </div>
+        </section>
+    </div>
+{% endblock content %}

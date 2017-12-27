@@ -1,0 +1,378 @@
+{% extends 'AppBundle::layout_m.html.twig' %}
+{% form_theme form 'AppBundle::form_m_clear.html.twig' %}
+
+{% block title %}{{ settings['landing_title'] }}{% endblock title %}
+{% block meta_keywords %}{{ settings['landing_keywords'] }}{% endblock meta_keywords %}
+{% block meta_description %}{{ settings['landing_description'] }}{% endblock meta_description %}
+
+{% block extra_wrapper_class %}m_bg_diamond{% endblock extra_wrapper_class %}
+
+{% block content %}
+<div class="form_wrapper">
+    <section class="form--inner">
+        <h4 class="form--h m_apply">Подать заявку</h4>
+        {{ form_start(form) }}
+            {{ form_row(form.last_name) }}
+            {{ form_row(form.first_name) }}
+            {{ form_row(form.patronymic) }}
+
+            <div id="phone_wr">
+                <div class="e_form_group">
+                    {{ form_label(form.phone_mobile) }}
+                    {{ form_widget(form.phone_mobile) }}
+                    <span title="Номер телефона подтверждён" style="display:none" class="e_phone_confirm"></span>
+                    {{ form_errors(form.phone_mobile) }}
+                </div>
+                <div class="e_form_group">
+                    <button id="phone_send_btn" class="e_send_phone" type="button" disabled="disabled">Подтвердить телефон</button>
+                </div>
+            </div>
+            <div id="code_wr">
+                <div class="e_form_group m_bg">
+                    <label for="code" class="m_1">На Ваш номер<br> отправлен SMS-код подтверждения</label>
+                    <div class="e_form_group_code_controls">
+                        <input id="code" name="code" type="text" class="e_form_control e_form_control_code">
+                        <button id="code_send_btn" class="e_send_code_confirm" type="button">Подтвердить код</button>
+                    </div>
+                    <div>
+                        <button id="code_resend_btn" class="e_send_again" type="button">Отправить ещё раз</button>
+                        <button id="code_cancel_btn" class="e_chang_number" type="button">Изменить номер</button>
+                    </div>
+                </div>
+            </div>
+
+            {{ form_row(form.email) }}
+            {{ form_row(form.plainPassword) }}
+
+            <div class="e_form_group">
+                <label for="category">Пакет</label>
+                <div class="e_select_wrap">
+                    <select id="category" name="category" aria-required="true" required="required">
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="e_form_group m_border_bottom_2">
+                <label class="m_padd">Способ оплаты:</label>
+                <div>
+                    <input id="method_online" name="method" type="radio" class="e_request_payment" checked="checked" value="online" />
+                    <label for="method_online" class="e_request_payment_label">Оплата картой на сайте (<span><span id="online_onetime_sum">0</span> руб.</span>)
+                        <span class="text_red">&mdash; Максимальная выгода!</span>
+                    </label>
+                </div>
+                <div>
+                    <input id="method_offline" name="method" type="radio" class="e_request_payment" value="offline" />
+                    <label for="method_offline" class="e_request_payment_label m_2">Оплата наличными в офисе (<b><b id="offline_onetime_sum">0</b> руб.</b>)</label>
+                </div>
+            </div>
+
+            <div class="e_form_group m_border_bottom_2">
+                <input id="first_payment" name="first_payment" type="checkbox" value="1" class="e_order_payment">
+                <label for="first_payment" class="e_order_payment_label">
+                    Хочу в рассрочку
+                    <span>Первоначальный взнос - <b><b id="first_payment_sum">0</b> руб.</b></span>
+                    <span>Общая стоимость обучения - <b><b id="base_sum">0</b> руб.</b></span>
+                </label>
+            </div>
+            <div class="e_form_group">
+                <p class="e_payment_total">К оплате: <span><span id="payment_sum">0</span> руб</span>.</p>
+            </div>
+
+            <div class="e_form_group m_border_bottom">
+                {{ form_widget(form.agreement) }}
+                {{ form_label(form.agreement) }}
+                {{ form_errors(form.agreement) }}
+            </div>
+
+            <div class="e_form_group ">
+                <input name="fos_user_registration_form[_token]" type="hidden" value="{{ csrf_token_reg }}" />
+                <button id="submit_btn" type="submit" class="e_send_form">Отправить</button>
+                <button type="reset" class="e_cancel">Отмена</button>
+            </div>
+        {{ form_end(form) }}
+
+        <div style="display:none" class="successMessage">
+            <div>
+                <p class="msg">
+                    Ваша заявка принята! Инструкция о том что делать дальше отправлена Вам на почту.
+                    Спасибо, и до встречи на занятиях!
+                </p>
+                <p>
+                    <button class="e_send_form" type="button">Ок</button>
+                </p>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="form_info_wrapper">
+    <div class="b_text_info">
+        <div class="b_text_info--h2">Уважаемый ученик!</div>
+        <ol class="b_custom_counter">
+            <li>
+                Для начала обучения в автошколе Вам достаточно заполнить эту короткую
+                регистрационную форму.
+            </li>
+            <li>
+                Вы можете выбрать вид оплаты (онлайн со скидкой или наличными в офисе),
+                тарифный план (пакет обучения) автошколы, а также воспользоваться
+                предложением о рассрочке платежа.
+            </li>
+            <li>
+                После отправки формы на указанный e-mail Вам будет выслано письмо с подтверждением
+                регистрации и адресом центрального офиса для заключения договора и вручения подарка.
+            </li>
+            <li>
+                Если Вы оплатите обучение онлайн (банковской картой на сайте),
+                то не только получите самую большую скидку, но и  сможете начать
+                обучение уже прямо сейчас, получив доступ ко всем материалам теоретического курса.
+            </li>
+        </ol>
+    </div>
+</div>
+{% endblock content %}
+
+{% block js %}
+<script src="/m/js/jquery.inputmask.js"></script>
+<script>
+$(function() {
+    var phone_status = '{{ phone_status }}';
+    var phone_wr = $('#phone_wr');
+    var phone = $('#fos_user_registration_form_phone_mobile');
+    var phone_td = phone.closest('.e_form_group');
+    var phone_send_btn = $('#phone_send_btn');
+    var code_wr = $('#code_wr');
+    var code = $('#code');
+    var code_td = code.closest('.e_form_group');
+    var code_send_btn = $('#code_send_btn');
+    var code_resend_btn = $('#code_resend_btn');
+    var code_cancel_btn = $('#code_cancel_btn');
+
+    phone.on('keyup', function() {
+        if (/^\+7\s\(\d{3}\)\s\d{3}\-\d{2}\-\d{2}$/.test(phone.val())) {
+            phone_send_btn.removeAttr('disabled');
+        } else {
+            phone_send_btn.attr('disabled', 'disabled');
+        }
+        $('label.error', phone_wr).remove();
+    });
+
+    code.on('keyup', function() {
+        if (/^\d{4}$/.test(code.val())) {
+            code_send_btn.removeAttr('disabled');
+        } else {
+            code_send_btn.attr('disabled', 'disabled');
+        }
+        $('label.error', code_wr).remove();
+    });
+
+    var send_phone_click = function(e) {
+        e.preventDefault();
+        $('label.error,label.warning,label.success', phone_wr).remove();
+        phone_send_btn.attr('disabled', 'disabled');
+        if (/^\+7\s\(\d{3}\)\s\d{3}\-\d{2}\-\d{2}$/.test(phone.val())) {
+            $.post('{{ path('my_user_registration_check_phone_ajax') }}', { phone: phone.val() }, function(data) {
+                if (data.message) {
+                    phone_status = 'sended';
+                    init_code();
+                } else {
+                    phone_td.append('<label class="error">Неверный номер телефона</label>');
+                }
+                phone_send_btn.removeAttr('disabled');
+            });
+        } else {
+            phone_td.append('<label class="error">Неверный номер телефона</label>');
+            phone_send_btn.removeAttr('disabled');
+        }
+    };
+
+    var send_code_click = function(e) {
+        e.preventDefault();
+        $('label.error,label.warning,label.success', code_wr).remove();
+        code_send_btn.attr('disabled', 'disabled');
+        if (/^\d{4}$/.test(code.val())) {
+            $.post('{{ path('my_user_registration_check_phone_code_ajax') }}', { code: code.val() }, function(data) {
+                if (data.reset) {
+                    phone_status = '';
+                    init_phone();
+                } else if (data.success) {
+                    phone_status = 'confirmed';
+                    init_phone_confirmed(data.phone);
+                } else {
+                    code_td.append('<label class="error">Неверный код!</label>');
+                }
+                code_send_btn.removeAttr('disabled');
+            });
+        } else {
+            code_td.append('<label class="error">Неверный код!</label>');
+            code_send_btn.removeAttr('disabled');
+        }
+    };
+
+    var cancel_code_click = function(e) {
+        e.preventDefault();
+        phone_status = '';
+        init_phone();
+    };
+
+    var resend_code_click = function(e) {
+        e.preventDefault();
+        code.val('');
+        $('label.error,label.warning,label.success', code_wr).remove();
+        code_resend_btn.attr('disabled', 'disabled');
+        $.post('{{ path('my_user_registration_check_phone_resend_ajax') }}', function(data) {
+            if (data.reset) {
+                phone_status = '';
+                init_phone();
+            } else if (data.already) {
+                code_td.append('<label class="warning">' + data.message + '</label>');
+            } else if (data.message) {
+                code_td.append('<label class="success">' + data.message + '</label>');
+            } else {
+                code_td.append('<label class="error">Ошибка!</label>');
+            }
+            code_resend_btn.removeAttr('disabled');
+        });
+    };
+
+    var init_phone = function(leave_errors) {
+        if (!leave_errors) {
+            $('label.error,label.warning,label.success', phone_wr).remove();
+        }
+        code_wr.hide();
+        phone_wr.show();
+        phone.val('');
+        phone.inputmask('+7 (999) 999-99-99', { clearMaskOnLostFocus: false });
+        phone.removeAttr('placeholder');
+        phone_send_btn.unbind('click').on('click', send_phone_click);
+        phone_send_btn.attr('disabled', 'disabled');
+        phone.removeAttr('disabled');
+        $('.e_phone_confirm', phone_td).hide();
+        phone_send_btn.closest('.e_form_group').show();
+    };
+    init_phone(true);
+
+    var init_code = function() {
+        $('label.error,label.warning,label.success', code_wr).remove();
+        phone_wr.hide();
+        code_wr.show();
+        code.val('');
+        code.inputmask('9999', { clearMaskOnLostFocus: false });
+        code_send_btn.unbind('click').on('click', send_code_click);
+        code_resend_btn.unbind('click').on('click', resend_code_click);
+        code_cancel_btn.unbind('click').on('click', cancel_code_click);
+        code_send_btn.attr('disabled', 'disabled');
+    };
+    if (phone_status == 'sended') {
+        init_code();
+    }
+
+    var init_phone_confirmed = function(phone_str) {
+        code_wr.hide();
+        phone_wr.show();
+        phone.val(phone_str);
+        phone.attr('disabled', 'disabled');
+        $('.e_phone_confirm', phone_td).show();
+        phone_send_btn.closest('.e_form_group').hide();
+    };
+    if (phone_status == 'confirmed') {
+        init_phone_confirmed('{{ phone }}');
+    }
+
+    var categories = eval({{ categories|json_encode|raw }});
+    var change_params = function() {
+        var category = categories[$('#category').val()];
+        $('#online_onetime_sum').html(category['online_onetime']);
+        $('#offline_onetime_sum').html(category['offline_onetime']);
+        var base_sum_block = $('#base_sum');
+        var payment_sum_block = $('#payment_sum');
+        base_sum_block.html(category['base']);
+        var method = $('input[name="method"]:checked').val();
+        if (method == 'online') {
+            if ($('#first_payment').is(':checked')) {
+                base_sum_block.html(category['online_1_2']);
+                payment_sum_block.html(category['online_1']);
+            } else {
+                base_sum_block.html(category['online_onetime']);
+                payment_sum_block.html(category['online_onetime']);
+            }
+            $('#first_payment_sum').html(category['online_1']);
+        } else if (method == 'offline') {
+            base_sum_block.html(category['offline_1_2']);
+            payment_sum_block.html($('#first_payment').is(':checked') ? category['offline_1'] : category['offline_onetime']);
+            $('#first_payment_sum').html(category['offline_1']);
+        }
+    };
+    $('#category').on('change', change_params);
+    $('#method_online').on('change', change_params);
+    $('#method_offline').on('change', change_params);
+    $('#first_payment').on('change', change_params);
+    change_params();
+
+    var submit_btn = $('#submit_btn');
+
+    var check_agreement = function() {
+        var agreement = $('#fos_user_registration_form_agreement');
+        var agreement_td = agreement.closest('.e_form_group');
+        if (agreement.is(':checked')) {
+            submit_btn.removeAttr('disabled');
+        } else {
+            submit_btn.attr('disabled', 'disabled');
+        }
+        $('label.error', agreement_td).remove();
+    };
+    $('#fos_user_registration_form_agreement').on('change', check_agreement);
+    check_agreement();
+
+    var form = $('.form_wrapper form');
+    form.on('submit', function(e) {
+        e.preventDefault();
+        submit_btn.removeAttr('disabled');
+        $('label.error,label.warning,label.success').remove();
+
+        $.post($(this).attr('action'), $(this).serialize(), function(data) {
+            if (data.errors) {
+                for (var i in data.errors) {
+                    if (data.errors.hasOwnProperty(i)) {
+                        $('#fos_user_registration_form_'+i).closest('.e_form_group').append('<label class="error">'+data.errors[i]+'</label>');
+                    }
+                }
+            } else if (data.success) {
+                init_reg_success();
+                {% if _server_type is defined and _server_type == 'prod' %}
+                yaCounter37278030.reachGoal('APPLY');
+                ga('send', 'event', 'Apply', 'Send', '', 0);
+                {% endif %}
+            } else {
+                alert('Похоже, что вы авторизованы в соседней вкладке.');
+                location.assign('{{ path('homepage') }}');
+            }
+            submit_btn.removeAttr('disabled');
+        });
+
+    });
+
+    var successMessage = $('.successMessage');
+    var init_reg_success = function() {
+        successMessage.show();
+        $('.e_send_form', successMessage).on('click', function() {
+            form_reset();
+        });
+    };
+
+    var form_reset = function() {
+        successMessage.hide();
+        form[0].reset();
+        init_phone(true);
+        check_agreement();
+    };
+
+    $('[type=reset]', form).on('click', function(e) {
+        e.preventDefault();
+        form_reset();
+    });
+});
+</script>
+{% endblock js %}

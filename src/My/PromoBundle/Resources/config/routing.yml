@@ -1,0 +1,3 @@
+promo_check_ajax:
+    pattern:  /check/
+    defaults: { _controller: PromoBundle:Default:checkAjax }

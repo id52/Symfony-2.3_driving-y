@@ -1,0 +1,171 @@
+{% extends 'FOSUserBundle::layout.html.twig' %}
+{% form_theme form 'AppBundle::form_m_clear.html.twig' %}
+
+{% block extra_wrapper_class %}m_bg_diamond{% endblock extra_wrapper_class %}
+
+{% block fos_user_content %}
+<div class="form_wrapper">
+    <section class="form--inner m_confirm_reg">
+        <h4 class="form--h m_apply">Подтверждение регистрации</h4>
+        {{ form_start(form) }}
+
+        <div id="phone_wr" style="display:none">
+            <div class="e_form_group">
+                <label for="new_phone">Телефон:</label>
+                <input id="new_phone" type="text">
+            </div>
+            <div class="e_form_group">
+                <button id="back_phone_send_btn" class=" e_send_phone e_send_phone_2 e_send_phone_red" type="button">Отменить</button>
+                <button id="phone_send_btn" class="e_send_phone e_send_phone_2" type="button">Подтвердить телефон</button>
+            </div>
+        </div>
+        <div id="code_wr">
+            <div class="e_form_group m_bg">
+                <label for="code" class="confirm_reg--info">На номер <span>+7 ({{ phone|slice(0, 3) }}) {{ phone|slice(3, 3) }}-{{ phone|slice(6, 2) }}-{{ phone|slice(8, 2) }}</span><br> отправлен SMS-код подтверждения.<br>Введите его в строку ниже</label>
+                <div class="e_form_group_code_controls">
+                    {{ form_widget(form.code, { attr: { class: 'e_form_control e_form_control_code' }}) }}
+                    <button id="code_send_btn" class="e_send_code_confirm" type="submit">Подтвердить код</button>
+                </div>
+                <div>
+                    <button id="code_resend_btn" class="e_send_again" type="button">Отправить ещё раз</button>
+                    <button id="code_cancel_btn" class="e_chang_number" type="button">Изменить номер</button>
+                    {{ form_errors(form.code) }}
+                </div>
+            </div>
+        </div>
+        {{ form_errors(form) }}
+        {{ form_end(form) }}
+    </section>
+</div>
+
+<div class="form_info_wrapper">
+    <div class="b_text_info">
+        <div class="b_text_info--h2">Уважаемый ученик!</div>
+        {{ text|raw }}
+    </div>
+</div>
+{% endblock fos_user_content %}
+
+{% block js %}
+<script src="/m/js/jquery.inputmask.js"></script>
+<script>
+$(function() {
+    var timerId;
+    var phone_check = function() {
+        if (/^\+7\s\(\d{3}\)\s\d{3}\-\d{2}\-\d{2}$/.test($('#new_phone').val())) {
+            $('#phone_send_btn').removeAttr('disabled');
+        } else {
+            $('#phone_send_btn').attr('disabled', 'disabled');
+        }
+    };
+
+    $('#new_phone')
+        .inputmask('+7 (999) 999-99-99', { clearMaskOnLostFocus: false })
+        .keyup(phone_check);
+
+    var code_check = function() {
+        if ($('#confirmation_code').val().search(/^\d{4}$/) != -1) {
+            $('#code_send_btn').removeAttr('disabled');
+        } else {
+            $('#code_send_btn').attr('disabled', 'disabled');
+        }
+    };
+    code_check();
+
+    $('#confirmation_code')
+        .inputmask('9999', { clearMaskOnLostFocus: false })
+        .keypress(function(e) {
+            if (e.which == 13) {
+                e.preventDefault();
+            }
+        })
+        .keyup(code_check);
+
+    var show_code = function() {
+        $('label.error').remove();
+        $('#phone_wr').hide();
+        $('#confirmation_code').val('');
+        $('#code_send_btn').attr('disabled', 'disabled');
+        $('#code_wr').show();
+    };
+
+    var show_phone = function() {
+        $('label.error').remove();
+        $('#phone_wr').show();
+        $('#new_phone').val('');
+        $('#phone_send_btn').attr('disabled', 'disabled');
+        $('#code_wr').hide();
+    };
+
+    var sms_repeat_timer_start = function(last, message) {
+        if (last > 0) {
+            $('#code_resend_btn').closest('div').append('<label for="new_phone" class="error">'+message+'</label>');
+            clearTimeout(timerId);
+            timerForSendSms(last);
+            setTimeout(function() {
+                $('label.error').remove();
+            }, last*1000);
+        }
+    };
+    sms_repeat_timer_start({{ last }}, '{{ message }}');
+
+    $('#code_resend_btn').on('click', function(e) {
+        e.preventDefault();
+        $.post('{{ path('fos_user_confirmation_repeat_sms', { hash: app.request.attributes.get('hash') }) }}', function(data) {
+            $('label.error').remove();
+            sms_repeat_timer_start(data.last, data.message);
+        });
+    });
+
+    $('#code_cancel_btn').on('click', function(e) {
+        e.preventDefault();
+        show_phone();
+    });
+
+    $('#back_phone_send_btn').on('click', function (e) {
+        e.preventDefault();
+        show_code();
+    });
+
+    $('#phone_send_btn').on('click', function(e) {
+        e.preventDefault();
+        $('label.error').remove();
+        $('#phone_send_btn').attr('disabled', 'disabled');
+        $.post('{{ path('fos_user_confirmation_change_phone', { hash: app.request.attributes.get('hash') }) }}', {
+            phone: $('#new_phone').val()
+        }, function(data) {
+            if (data.error) {
+                $('.e_form_group:first-of-type', '#phone_wr').append('<label for="new_phone" class="error">'+data.error+'</label>');
+            } else {
+                $('.confirm_reg--info span').html($('#new_phone').val());
+                show_code();
+                sms_repeat_timer_start(data.last, data.message);
+            }
+            $('#phone_send_btn').removeAttr('disabled');
+        });
+    });
+
+    function timerForSendSms(lastSend) {
+        var timer = document.getElementById('timer_sms');
+        var m = parseInt(lastSend / 60);
+        var s = lastSend % 60;
+        if (lastSend == 0) {
+            $('label.error').remove();
+            return;
+        }
+        if (m < 10) m = "0" + m;
+        if (s < 10) s = "0" + s;
+        if (timer) {
+            timer.innerHTML = 'Повторная отправка SMS-кода<br>возможна через 00:' + m + ':' + s;
+        } else {
+            $('#code_resend_btn').closest('div').append('<label for="new_phone" id="timer_sms" class="error">Повторная отправка SMS-кода<br>возможна через 00:'+m+':'+s+'</label>');
+        }
+        lastSend --;
+
+        if (lastSend > 0 ) {
+            timerId = setTimeout(timerForSendSms, 1000, lastSend);
+        }
+    }
+});
+</script>
+{% endblock js %}

@@ -1,0 +1,18 @@
+{% extends 'AppBundle::layout_m_clear.html.twig' %}
+{% form_theme form 'AppBundle::form_m_clear.html.twig' %}
+
+{% block title %}Смена пароля | {{ 'project.name'|trans }}{% endblock title %}
+
+{% block content %}
+<div class="form_wrapper">
+    <section class="form--inner">
+        <h4 class="form--h clear-h">Смена пароля:</h4>
+        <form action="{{ path('fos_user_resetting_reset', {'token': token}) }}" {{ form_enctype(form) }} method="post">
+            {{ form_widget(form) }}
+            <div class="e_form_group">
+                <button type="submit" class="e_send_form">{{ 'resetting.reset.submit'|trans({}, 'FOSUserBundle') }}</button>
+            </div>
+        </form>
+    </section>
+</div>
+{% endblock content %}
